@@ -15,5 +15,9 @@
     "@zip.js/zip.js": "^2.7.73",
     "astro": "^5.15.7",
     "dialog-polyfill": "^0.5.6"
+  },
+  "devDependencies": {
+    "@csstools/postcss-global-data": "^4.0.0",
+    "postcss-custom-properties": "^15.0.0"
   }
 }

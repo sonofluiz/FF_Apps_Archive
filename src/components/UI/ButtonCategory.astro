@@ -389,26 +389,3 @@ const hasIcon = Astro.slots.has('icon');
     border-radius: calc(var(--radius-md) + 4px);
   }
 </style>
-
-<script>
-  // Add click handlers to toggle active state for label and inline variants
-  document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('[data-category-button]');
-    
-    buttons.forEach(button => {
-      const variant = button.getAttribute('data-variant');
-      
-      // Only add toggle behavior for label and inline variants
-      if (variant === 'label' || variant === 'inline') {
-        button.addEventListener('click', (e) => {
-          // Toggle active class
-          button.classList.toggle('active');
-          
-          // Update data attribute
-          const isActive = button.classList.contains('active');
-          button.setAttribute('data-active', isActive.toString());
-        });
-      }
-    });
-  });
-</script>

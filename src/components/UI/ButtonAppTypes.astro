@@ -266,21 +266,3 @@ const hasIcon = Astro.slots.has('icon');
     border-radius: calc(var(--radius-md) + 2px);
   }
 </style>
-
-<script>
-  // Add click handlers to toggle active state for both variants
-  document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('[data-app-types-button]');
-    
-    buttons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        // Toggle active class
-        button.classList.toggle('active');
-        
-        // Update data attribute
-        const isActive = button.classList.contains('active');
-        button.setAttribute('data-active', isActive.toString());
-      });
-    });
-  });
-</script>

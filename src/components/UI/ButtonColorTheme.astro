@@ -155,6 +155,16 @@ const circleX = getCirclePosition(state);
           activeIcon.setAttribute('data-visible', 'true');
         }
       }
+      
+      // Apply the theme to the application
+      const html = document.documentElement;
+      html.setAttribute('data-theme', nextState);
+      
+      // Store theme preference in localStorage
+      localStorage.setItem('color-theme', nextState);
+      
+      // Dispatch custom event for theme change
+      window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: nextState } }));
     });
   });
 </script>
