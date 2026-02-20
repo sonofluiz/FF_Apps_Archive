@@ -1,0 +1,63 @@
+---
+/**
+ * MenuPageNavButtons Component
+ * Horizontal menu containing Previous and Next navigation buttons
+ * 
+ * Features:
+ * - Contains two ButtonPageNav components (Previous and Next)
+ * - 12px gap between buttons
+ * - 12px vertical padding
+ * - Buttons grow equally to fill space
+ * - Previous button defaults to disabled state
+ * 
+ * Usage:
+ * <MenuPageNavButtons />
+ */
+
+import ButtonPageNav from './ButtonPageNav.astro';
+
+interface Props {
+  disablePrevious?: boolean;
+  disableNext?: boolean;
+  onPreviousClick?: string;
+  onNextClick?: string;
+}
+
+const { 
+  disablePrevious = true,
+  disableNext = false,
+  onPreviousClick,
+  onNextClick
+} = Astro.props;
+---
+
+<nav class="menu-page-nav-buttons" aria-label="Page navigation">
+  <ButtonPageNav 
+    variant="previous" 
+    disabled={disablePrevious}
+    onclick={onPreviousClick}
+  />
+  <ButtonPageNav 
+    variant="next" 
+    disabled={disableNext}
+    onclick={onNextClick}
+  />
+</nav>
+
+<style>
+  /* Base Menu Container */
+  .menu-page-nav-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-12);
+    padding: var(--spacing-12) 0;
+    width: 100%;
+  }
+
+  /* Make buttons grow equally to fill available space */
+  .menu-page-nav-buttons :global(.button-page-nav) {
+    flex: 1 0 0;
+    min-width: 0;
+  }
+</style>

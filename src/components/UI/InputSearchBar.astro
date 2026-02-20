@@ -1,0 +1,251 @@
+---
+/**
+ * Search Bar Input Component
+ * Search input field with integrated search button, close button, and notification badge
+ * 
+ * States:
+ * - Default: Bottom border with shadow, placeholder text
+ * - Hover: Full primary border, no shadow
+ * - Focus: 2px faded border for keyboard navigation
+ * - Filled: User has typed text, maintains focus styling
+ * - Disabled: 40% opacity with notification badge visible (nested ButtonSearch remains in default state)
+ * 
+ * Features:
+ * - Integrated ButtonSearch component (left) - always enabled
+ * - Integrated ButtonClose component (right) - 16px size, 60% opacity, clears input text when clicked
+ * - Notification badge appears when disabled
+ * - Placeholder: "Search for apps"
+ */
+
+import ButtonSearch from './ButtonSearch.astro';
+import ButtonClose from './ButtonClose.astro';
+import BadgeNotification from './BadgeNotification.astro';
+
+interface Props {
+  placeholder?: string;
+  value?: string;
+  disabled?: boolean;
+  name?: string;
+  id?: string;
+}
+
+const { 
+  placeholder = 'Search for apps', 
+  value = '',
+  disabled = false,
+  name,
+  id
+} = Astro.props;
+
+// Generate unique ID for this instance to coordinate clear functionality
+const uniqueId = id || `search-bar-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div class="search-bar-wrapper">
+  <!-- Notification Badge - Only visible when disabled -->
+  {disabled && (
+    <div class="badge-notification-container">
+      <BadgeNotification variant="warning" />
+    </div>
+  )}
+  
+  <div class="search-bar-inner" data-disabled={disabled}>
+    <!-- Search Button (Left) - Disabled when search bar is disabled to prevent focus -->
+    <div class="search-button-container">
+      <ButtonSearch disabled={disabled} />
+    </div>
+    
+    <!-- Input Field (Center) -->
+    <input
+      type="text"
+      class="search-input"
+      placeholder={placeholder}
+      value={value}
+      disabled={disabled}
+      name={name}
+      id={uniqueId}
+    />
+    
+    <!-- Close Button (Right) - 16px size, 60% opacity, clears input text when clicked -->
+    <div 
+      class="close-button-container"
+      onclick={`document.getElementById('${uniqueId}').value = ''; document.getElementById('${uniqueId}').focus();`}
+      role="button"
+      tabindex="-1"
+      aria-label="Clear search"
+      onkeydown={`if(event.key === 'Enter' || event.key === ' '){event.preventDefault(); document.getElementById('${uniqueId}').value = ''; document.getElementById('${uniqueId}').focus();}`}
+    >
+      <ButtonClose size="xs" opacity={0.6} disabled={disabled} />
+    </div>
+    
+    <!-- Border overlay - changes on hover/focus without affecting layout -->
+    <div aria-hidden="true" class="border-overlay"></div>
+  </div>
+</div>
+
+<style>
+  /* ========================================
+     WRAPPER & LAYOUT
+     ======================================== */
+  .search-bar-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .search-bar-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    width: 100%;
+    padding: var(--spacing-8);
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+      to bottom,
+      var(--surface-light-background-start),
+      var(--surface-light-background-end)
+    );
+    border: none;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    box-shadow: var(--shadow-app-icon);
+    transition: all 0.2s ease;
+  }
+
+  /* ========================================
+     NESTED COMPONENT CONTAINERS
+     ======================================== */
+  .search-button-container {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .close-button-container {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  /* Keep close button at 60% opacity even on hover (design requirement) */
+  .close-button-container :global(.button-close .icon-wrapper) {
+    opacity: 0.6 !important;
+  }
+
+  /* Hide notification badge in nested ButtonSearch when search bar is disabled */
+  .search-bar-inner[data-disabled="true"] :global(.button-search .badge-container) {
+    display: none;
+  }
+
+  /* Prevent scale transform on active state for nested button */
+  .close-button-container :global(.button-close:active) {
+    transform: none;
+  }
+
+  /* Badge positioned at top-right corner */
+  .badge-notification-container {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* ========================================
+     INPUT FIELD STYLING
+     ======================================== */
+  .search-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--on-surface-light-regular);
+    
+    /* Typography - body-sm */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-sm-size);
+    line-height: var(--body-sm-line);
+    letter-spacing: var(--body-sm-spacing);
+    
+    outline: none;
+    padding: 0;
+  }
+
+  .search-input::placeholder {
+    color: var(--on-surface-light-faded);
+  }
+
+  /* ========================================
+     STATE: HOVER
+     ======================================== */
+  .search-bar-inner:hover:not(:has(input:focus)):not([data-disabled="true"]) {
+    box-shadow: none;
+  }
+
+  /* ========================================
+     STATE: FOCUS
+     ======================================== */
+  .search-input:focus-visible {
+    outline: none;
+  }
+
+  .search-bar-inner:has(input:focus-visible) {
+    box-shadow: none;
+  }
+
+  /* ========================================
+     STATE: DISABLED
+     ======================================== */
+  .search-bar-inner[data-disabled="true"] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .search-input:disabled {
+    cursor: not-allowed;
+  }
+
+  .search-bar-inner[data-disabled="true"] .close-button-container {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Prevent nested buttons from being focusable when search bar is disabled */
+  .search-bar-inner[data-disabled="true"] :global(.button-search),
+  .search-bar-inner[data-disabled="true"] :global(.button-close) {
+    pointer-events: none;
+    outline: none;
+  }
+
+  /* Remove focus outline from nested buttons when disabled */
+  .search-bar-inner[data-disabled="true"] :global(.button-search:focus-visible),
+  .search-bar-inner[data-disabled="true"] :global(.button-close:focus-visible) {
+    outline: none;
+  }
+
+  /* ========================================
+     BORDER OVERLAY
+     ======================================== */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    border: none;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    transition: all 0.2s ease;
+  }
+
+  /* Hover state - full border, primary color */
+  .search-bar-inner:hover:not(:has(input:focus)):not([data-disabled="true"]) .border-overlay {
+    border: var(--border-sm) solid var(--on-surface-light-primary);
+  }
+
+  /* Focus state - 2px border, faded color */
+  .search-bar-inner:has(input:focus-visible) .border-overlay {
+    border: var(--border-lg) solid var(--on-surface-light-faded);
+  }
+</style>

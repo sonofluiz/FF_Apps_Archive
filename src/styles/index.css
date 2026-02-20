@@ -11,7 +11,10 @@
 /* 3. Optional reset */
 @import "./reset.css";
 
-/* 4. Global base styles */
+/* 4. Scrollbar styling */
+@import './scrollbar.css';
+
+/* 5. Global base styles */
 html {
   font-family: var(--body-sm-size);
   background-color: var(--surface-light-low);

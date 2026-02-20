@@ -1,0 +1,216 @@
+---
+/**
+ * MenuAlphabetPagination Component
+ * A collapsible menu containing alphabet pagination buttons
+ * 
+ * States:
+ * - Collapsed (default): Horizontal layout - Single row of scrollable buttons (left) + expansion button (right)
+ * - Expanded: Vertical layout - Expansion button at top-right + All alphabet button rows below
+ * 
+ * Interaction:
+ * - Clicking expansion button toggles between collapsed/expanded
+ * - The button icon changes based on state (chevron down → X)
+ * 
+ * Props:
+ * @param defaultExpanded - Whether menu starts expanded (default: false)
+ * 
+ * Usage:
+ * <MenuAlphabetPagination />
+ * <MenuAlphabetPagination defaultExpanded={true} />
+ */
+
+import ButtonAlphabetMenuExpansion from './ButtonAlphabetMenuExpansion.astro';
+import ButtonsAlphabetPagination from './ButtonsAlphabetPagination.astro';
+
+interface Props {
+  defaultExpanded?: boolean;
+}
+
+const { defaultExpanded = false } = Astro.props;
+---
+
+<div class="alphabet-menu" data-expanded={defaultExpanded}>
+  <div class="menu-container">
+    <!-- Border overlay for bottom border -->
+    <span aria-hidden="true" class="border-overlay"></span>
+    
+    <!-- Expansion button - positioned differently based on state -->
+    <div class="expansion-button-wrapper" data-expanded={defaultExpanded}>
+      <ButtonAlphabetMenuExpansion expanded={defaultExpanded} />
+    </div>
+    
+    <!-- Alphabet buttons wrapper -->
+    <div class="buttons-wrapper">
+      <ButtonsAlphabetPagination />
+    </div>
+  </div>
+</div>
+
+<script>
+  // Handle toggle functionality for all instances of the component
+  document.querySelectorAll('.alphabet-menu').forEach((menu) => {
+    const expansionButtonWrapper = menu.querySelector('.expansion-button-wrapper');
+    const expansionButton = expansionButtonWrapper?.querySelector('button');
+    
+    if (expansionButton && expansionButtonWrapper) {
+      expansionButton.addEventListener('click', () => {
+        const isExpanded = menu.getAttribute('data-expanded') === 'true';
+        const newExpanded = !isExpanded;
+        
+        // Update menu data attribute
+        menu.setAttribute('data-expanded', String(newExpanded));
+        
+        // Update expansion button wrapper data attribute
+        expansionButtonWrapper.setAttribute('data-expanded', String(newExpanded));
+        
+        // Update button's aria-expanded
+        expansionButton.setAttribute('aria-expanded', String(newExpanded));
+        
+        // Toggle the icon by replacing the button content
+        const iconWrapper = expansionButton.querySelector('.icon-wrapper');
+        if (iconWrapper) {
+          if (newExpanded) {
+            // Show X icon
+            iconWrapper.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            `;
+          } else {
+            // Show chevron down icon
+            iconWrapper.innerHTML = `
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            `;
+          }
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .alphabet-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: var(--spacing-36);
+    padding-bottom: var(--spacing-12);
+  }
+  
+  .menu-container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: var(--spacing-8) 0;
+    background: linear-gradient(
+      to bottom,
+      var(--surface-light-background-start),
+      var(--surface-light-background-end)
+    );
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+  }
+  
+  /* Border overlay for bottom border */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-primary);
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+    pointer-events: none;
+  }
+  
+  /* ========================================
+     COLLAPSED STATE - Horizontal Layout
+     ======================================== */
+  
+  /* Collapsed: Horizontal row layout */
+  .alphabet-menu[data-expanded="false"] .menu-container {
+    flex-direction: row;
+    gap: var(--spacing-4);
+    align-items: center;
+  }
+  
+  /* Collapsed: Buttons on left, fill remaining space, scrollable */
+  .alphabet-menu[data-expanded="false"] .buttons-wrapper {
+    flex: 1 0 0;
+    min-width: 0;
+    order: 1;
+    overflow-x: auto;
+    overflow-y: clip;
+    /* Hide scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    /* Add right border for collapsed state */
+    border-right: var(--border-sm) solid var(--on-surface-light-border-low);
+  }
+  
+  /* Hide scrollbar for webkit browsers */
+  .alphabet-menu[data-expanded="false"] .buttons-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Collapsed: Expansion button on right, fixed size */
+  .alphabet-menu[data-expanded="false"] .expansion-button-wrapper {
+    flex-shrink: 0;
+    order: 2;
+  }
+  
+  /* Collapsed: Prevent wrapping in nested component, align to start */
+  .alphabet-menu[data-expanded="false"] .buttons-wrapper :global(.letters-grid) {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+  
+  /* Collapsed: Remove nested right border to avoid double border */
+  .alphabet-menu[data-expanded="false"] .buttons-wrapper :global(.alphabet-pagination) {
+    border-right: none;
+  }
+  
+  /* ========================================
+     EXPANDED STATE - Vertical Layout
+     ======================================== */
+  
+  /* Expanded: Vertical column layout */
+  .alphabet-menu[data-expanded="true"] .menu-container {
+    flex-direction: column;
+    gap: var(--spacing-8);
+    align-items: flex-end;
+  }
+  
+  /* Expanded: Expansion button at top-right */
+  .alphabet-menu[data-expanded="true"] .expansion-button-wrapper {
+    order: 1;
+  }
+  
+  /* Expanded: Alphabet buttons below, full width */
+  .alphabet-menu[data-expanded="true"] .buttons-wrapper {
+    order: 2;
+    width: 100%;
+    overflow: visible;
+  }
+  
+  /* Expanded: Remove side borders from nested component */
+  .alphabet-menu[data-expanded="true"] .buttons-wrapper :global(.side-borders) {
+    border-left: none;
+    border-right: none;
+  }
+  
+  /* Expanded: Add top border to nested component */
+  .alphabet-menu[data-expanded="true"] .buttons-wrapper :global(.alphabet-pagination)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-top: var(--border-sm) solid var(--on-surface-light-border-low);
+    pointer-events: none;
+  }
+  
+  /* Expanded: Adjust padding in nested component */
+  .alphabet-menu[data-expanded="true"] .buttons-wrapper :global(.alphabet-pagination > div) {
+    padding-top: var(--spacing-16);
+    padding-bottom: var(--spacing-8);
+  }
+</style>

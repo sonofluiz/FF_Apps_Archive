@@ -332,8 +332,7 @@ html:has(#light_theme:checked) {
 }
 
 /* Dark theme variable overrides - applied to body which is after the theme toggles */
-#dark_theme:checked ~ body,
-#dark_theme:checked ~ * body {
+#dark_theme:checked ~ body {
   /* Override surface tokens for dark mode */
   --surface-light-primary-gradient-start: var(--surface-dark-primary-gradient-start);
   --surface-light-primary-gradient-end: var(--surface-dark-primary-gradient-end);

@@ -1,0 +1,63 @@
+---
+/**
+ * App Categories Menu Component
+ * Container for category button chips - displays 1 or 2 category chips
+ * 
+ * Structure:
+ * - Flex wrap layout with horizontal gap
+ * - Always uses chip variant of ButtonCategory
+ * - Must contain 1-2 category buttons (never less than 1 or more than 2)
+ * 
+ * Props:
+ * @param categories - Array of 1-2 category items with label and icon component
+ * 
+ * Usage:
+ * <MenuAppCategories categories={[
+ *   { label: 'Games', Icon: IconGameControllerRegular },
+ *   { label: 'Books', Icon: IconBooksRegular }
+ * ]} />
+ */
+
+interface CategoryItem {
+  label: string;
+  Icon: any; // Astro component reference
+}
+
+interface Props {
+  categories?: CategoryItem[];
+}
+
+const { categories = [] } = Astro.props;
+
+// Validation: Must have 1 or 2 categories
+if (categories.length < 1 || categories.length > 2) {
+  console.warn('MenuAppCategories must have between 1 and 2 categories. Received:', categories.length);
+}
+
+// Import ButtonCategory component
+import ButtonCategory from './ButtonCategory.astro';
+---
+
+<div class="menu-container">
+  {categories.map((category) => (
+    <ButtonCategory variant="chip" label={category.label}>
+      <category.Icon slot="icon" />
+    </ButtonCategory>
+  ))}
+</div>
+
+<style>
+  /* ========================================
+     MENU CONTAINER
+     ======================================== */
+  .menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0px var(--spacing-12);
+    padding: var(--spacing-12) var(--spacing-4);
+    width: 100%;
+    height: 100%;
+  }
+</style>

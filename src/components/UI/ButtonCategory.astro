@@ -4,10 +4,10 @@
  * Multi-purpose button for category selection with 4 variants
  * 
  * Variants:
- * - label: Horizontal layout (icon + text), minimal width 160px
- * - chip: Compact horizontal (text + icon), fixed 69px width
- * - block: Vertical layout (icon above text), 90x76px
- * - inline: Full width horizontal (text + icon right), 280px
+ * - label: Horizontal layout (icon + text), minimal width 160px - USES FILLED ICONS
+ * - chip: Compact horizontal (text + icon), fixed 69px width - uses regular icons
+ * - block: Vertical layout (icon above text), 90x76px - uses regular icons
+ * - inline: Full width horizontal (text + icon right), 280px - uses regular icons
  * 
  * States:
  * - Default: Gradient background, subtle border
@@ -22,7 +22,13 @@
  * @param onclick - Optional click handler
  * 
  * Usage with custom icon:
+ * FOR LABEL VARIANT - Use filled icons:
  * <ButtonCategory variant="label" label="Books">
+ *   <IconBooksFilled slot="icon" />
+ * </ButtonCategory>
+ * 
+ * FOR OTHER VARIANTS - Use regular icons:
+ * <ButtonCategory variant="chip" label="Books">
  *   <IconBooksRegular slot="icon" />
  * </ButtonCategory>
  */
@@ -389,26 +395,3 @@ const hasIcon = Astro.slots.has('icon');
     border-radius: calc(var(--radius-md) + 4px);
   }
 </style>
-
-<script>
-  // Add click handlers to toggle active state for label and inline variants
-  document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('[data-category-button]');
-    
-    buttons.forEach(button => {
-      const variant = button.getAttribute('data-variant');
-      
-      // Only add toggle behavior for label and inline variants
-      if (variant === 'label' || variant === 'inline') {
-        button.addEventListener('click', (e) => {
-          // Toggle active class
-          button.classList.toggle('active');
-          
-          // Update data attribute
-          const isActive = button.classList.contains('active');
-          button.setAttribute('data-active', isActive.toString());
-        });
-      }
-    });
-  });
-</script>

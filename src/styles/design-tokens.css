@@ -24,39 +24,39 @@
      ======================================== */
   
   /* Heading XXL */
-  --heading-xxl-size: 64px;
-  --heading-xxl-line: 72px;
+  --heading-xxl-size: 4rem;
+  --heading-xxl-line: 4.5rem;
   
   /* Heading XL */
-  --heading-xl-size: 56px;
-  --heading-xl-line: 64px;
+  --heading-xl-size: 3.5rem;
+  --heading-xl-line: 4rem;
   
   /* Heading LG */
-  --heading-lg-size: 48px;
-  --heading-lg-line: 56px;
+  --heading-lg-size: 3rem;
+  --heading-lg-line: 3.5rem;
   
   /* Heading MD */
-  --heading-md-size: 40px;
-  --heading-md-line: 44px;
+  --heading-md-size: 2.5rem;
+  --heading-md-line: 2.75rem;
   
   /* Heading SM */
-  --heading-sm-size: 32px;
-  --heading-sm-line: 36px;
+  --heading-sm-size: 2rem;
+  --heading-sm-line: 2.25rem;
   
   /* Heading XS */
-  --heading-xs-size: 24px;
-  --heading-xs-line: 28px;
+  --heading-xs-size: 1.5rem;
+  --heading-xs-line: 1.75rem;
   
   /* Heading XXS */
-  --heading-xxs-size: 20px;
-  --heading-xxs-line: 24px;
+  --heading-xxs-size: 1.25rem;
+  --heading-xxs-line: 1.5rem;
   
   /* Heading XXXS */
-  --heading-xxxs-size: 16px;
-  --heading-xxxs-line: 20px;
+  --heading-xxxs-size: 1rem;
+  --heading-xxxs-line: 1.25rem;
   
   /* Billboard */
-  --heading-billboard-size: 128px;
+  --heading-billboard-size: 8rem;
   --heading-billboard-line: auto;
   
 
@@ -65,29 +65,29 @@
      ======================================== */
   
   /* Body LG */
-  --body-lg-size: 18px;
-  --body-lg-line: 36px;
+  --body-lg-size: 1.125rem;
+  --body-lg-line: 2.25rem;
   
   /* Body MD */
-  --body-md-size: 16px;
-  --body-md-line: 24px;
+  --body-md-size: 1rem;
+  --body-md-line: 1.5rem;
   
   /* Body SM */
-  --body-sm-size: 14px;
-  --body-sm-line: 22px;
+  --body-sm-size: 0.875rem;
+  --body-sm-line: 1.375rem;
   
   /* Body XS */
-  --body-xs-size: 12px;
-  --body-xs-line: 18px;
+  --body-xs-size: 0.75rem;
+  --body-xs-line: 1.125rem;
   
   /* Body XXS */
-  --body-xxs-size: 10px;
-  --body-xxs-line: 16px;
+  --body-xxs-size: 0.625rem;
+  --body-xxs-line: 1rem;
   
   /* Body XXS Small Caps */
-  --body-xxs-sc-size: 10px;
+  --body-xxs-sc-size: 0.625rem;
   --body-xxs-sc-line: normal;
-  --body-xxs-sc-spacing: 0.4px;
+  --body-xxs-sc-spacing: 0.025rem;
   
 
   /* ========================================
@@ -95,20 +95,20 @@
      ======================================== */
   
   /* Brand Bold MD */
-  --brand-bold-md-size: 24px;
-  --brand-bold-md-line: 20px;
+  --brand-bold-md-size: 1.5rem;
+  --brand-bold-md-line: 1.25rem;
   
   /* Brand Regular MD */
-  --brand-regular-md-size: 20px;
-  --brand-regular-md-line: 20px;
+  --brand-regular-md-size: 1.25rem;
+  --brand-regular-md-line: 1.25rem;
   
   /* Brand Bold SM */
-  --brand-bold-sm-size: 18px;
-  --brand-bold-sm-line: 20px;
+  --brand-bold-sm-size: 1.125rem;
+  --brand-bold-sm-line: 1.25rem;
   
   /* Brand Regular SM */
-  --brand-regular-sm-size: 16px;
-  --brand-regular-sm-line: 20px;
+  --brand-regular-sm-size: 1rem;
+  --brand-regular-sm-line: 1.25rem;
   
 
   /* ========================================

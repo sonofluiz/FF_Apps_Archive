@@ -1,0 +1,89 @@
+---
+/**
+ * ButtonsAlphabetPagination Component
+ * Container for alphabet letter navigation buttons (A-Z, All, #)
+ * 
+ * Features:
+ * - Renders all alphabet letters plus "All" and "#" options
+ * - Wrapping grid layout with center alignment
+ * - Side borders (left/right only)
+ * - Controlled selection via selectedLetter prop
+ * 
+ * Props:
+ * @param selectedLetter - Currently selected letter (default: "A")
+ * 
+ * Usage:
+ * <ButtonsAlphabetPagination selectedLetter="A" />
+ * <ButtonsAlphabetPagination selectedLetter="All" />
+ */
+
+import ButtonLetter from './ButtonLetter.astro';
+
+interface Props {
+  selectedLetter?: string;
+}
+
+const { selectedLetter = 'A' } = Astro.props;
+
+// All available letters including "All" and "#"
+const letters = [
+  'All', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'M', 
+  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'
+];
+---
+
+<div class="alphabet-pagination">
+  <!-- Side borders overlay (left/right only) -->
+  <div aria-hidden="true" class="side-borders"></div>
+  
+  <!-- Letters grid -->
+  <div class="letters-grid">
+    {letters.map(letter => (
+      <ButtonLetter 
+        letter={letter}
+        selected={letter === selectedLetter}
+      />
+    ))}
+  </div>
+</div>
+
+<style>
+  /* ========================================
+     ALPHABET PAGINATION CONTAINER
+     ======================================== */
+  .alphabet-pagination {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ========================================
+     SIDE BORDERS (left/right only)
+     ======================================== */
+  .side-borders {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-left: var(--border-sm) solid var(--on-surface-light-border-low);
+    border-right: var(--border-sm) solid var(--on-surface-light-border-low);
+  }
+
+  /* ========================================
+     LETTERS GRID
+     ======================================== */
+  .letters-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: flex-start;
+    row-gap: 28px;
+    column-gap: var(--spacing-12);
+    width: 100%;
+    border-radius: var(--radius-md);
+  }
+</style>
