@@ -1,0 +1,436 @@
+---
+/**
+ * ========================================
+ * APP CARD COMPONENT
+ * ========================================
+ * Card component for displaying app information with icon, title, categories, ratings, and status
+ * 
+ * Features:
+ * - Three interactive states: Default, Hover, Focus
+ * - Gradient background with border overlay pattern
+ * - Seven nested components (AppIcon, 2 Category Icons, H2, Star, Users, TagAppStatus)
+ * - Fully customizable props for all content
+ * - Optional second category icon (can be hidden)
+ * 
+ * Props:
+ * @param appIconSrc - Optional image source for app icon (if not provided, shows gradient)
+ * @param appTitle - App name text for H2 heading (default: "App Name")
+ * @param categoryText - Category labels text (default: "Category, Category")
+ * @param categoryIcon1 - Name of first category icon component (required, e.g., "IconGameControllerRegular")
+ * @param categoryIcon2 - Name of second category icon component (optional, e.g., "IconMusicNotesRegular")
+ * @param showCategoryIcon2 - Toggle second category icon visibility (default: true)
+ * @param starRating - Star rating value (default: "5.0")
+ * @param userCount - Number of users/ratings (default: "100")
+ * @param statusText - App status tag text (default: "App Type")
+ * @param statusShowHostedChip - Toggle hosted chip visibility (default: true)
+ * @param statusHostedChipVariant - Chip variant: 'live' | 'dead' (default: 'live')
+ * 
+ * Icon Slots:
+ * - statusIcon: Custom icon for status tag (defaults to IconPackage if not provided)
+ * 
+ * Design Tokens Used:
+ * - --spacing-4, --spacing-8, --spacing-12: Gap and padding
+ * - --radius-md: Border radius (4px)
+ * - --card-gradient-light-blue-start, --card-gradient-light-blue-end: Card gradient background (subtle 3% opacity)
+ * - --on-surface-light-regular: Primary text color
+ * - --on-surface-light-faded: Secondary text color
+ * - --on-surface-light-border-low: Default border color
+ * - --on-surface-light-primary: Hover and focus border color
+ * 
+ * Typography Tokens:
+ * - H2: Metropolis Bold, 16px/20px (--heading-xxxs-size/line)
+ * - Category text: Inter Regular, 10px/16px (--body-xxs-size/line)
+ * - Rating text: Inter Regular, 12px/18px (--body-xs-size/line)
+ * 
+ * Usage Examples:
+ * 
+ * Basic usage with one category:
+ * <CardApp 
+ *   appTitle="Chess Master"
+ *   categoryIcon1="IconGameControllerRegular"
+ *   showCategoryIcon2={false}
+ * />
+ * 
+ * With two categories and custom values:
+ * <CardApp 
+ *   appIconSrc="/path/to/icon.png"
+ *   appTitle="Music Player"
+ *   categoryText="Music, Entertainment"
+ *   categoryIcon1="IconMusicNotesRegular"
+ *   categoryIcon2="IconFilmStripRegular"
+ *   starRating="4.8"
+ *   userCount="1.2k"
+ *   statusText="Web App"
+ *   statusHostedChipVariant="live"
+ * >
+ *   <IconCloud slot="statusIcon" />
+ * </CardApp>
+ * 
+ * Interactive States:
+ * - Default: Subtle gradient background with light border (--on-surface-light-border-low)
+ * - Hover: Purple border (--on-surface-light-primary)
+ * - Focus: Darker purple border with 2px width (--on-surface-light-primary) 
+ * 
+ * Deviations from Astro Conversion Guide:
+ * - Dynamic icon imports using component name strings (categoryIcon1, categoryIcon2)
+ * - Uses slots for status icon to allow customization
+ */
+
+import AppIcon from './AppIcon.astro';
+import H2 from './H2.astro';
+import TagAppStatus from './TagAppStatus.astro';
+import IconStar from '../icons/ratings/IconStar.astro';
+import IconUsers from '../icons/ratings/IconUsers.astro';
+
+// Import all category icons from barrel export
+import * as CategoryIcons from '../icons/categories/index.js';
+
+interface Props {
+  appIconSrc?: string;
+  appTitle?: string;
+  categoryText?: string;
+  categoryIcon1?: string;
+  categoryIcon2?: string;
+  showCategoryIcon2?: boolean;
+  starRating?: string;
+  userCount?: string;
+  statusText?: string;
+  statusShowHostedChip?: boolean;
+  statusHostedChipVariant?: 'live' | 'dead';
+}
+
+const { 
+  appIconSrc,
+  appTitle = 'App Name',
+  categoryText = 'Category, Category',
+  categoryIcon1 = 'IconGameControllerRegular',
+  categoryIcon2 = 'IconMusicNotesRegular',
+  showCategoryIcon2 = true,
+  starRating = '5.0',
+  userCount = '100',
+  statusText = 'App Type',
+  statusShowHostedChip = true,
+  statusHostedChipVariant = 'live'
+} = Astro.props;
+
+// Get category icon components from barrel export
+const CategoryIcon1Component = CategoryIcons[categoryIcon1 as keyof typeof CategoryIcons] || CategoryIcons.IconGameControllerRegular;
+const CategoryIcon2Component = CategoryIcons[categoryIcon2 as keyof typeof CategoryIcons] || CategoryIcons.IconMusicNotesRegular;
+---
+
+<div class="card-app" tabindex="0">
+  <!-- Border Overlay (for interactive states) -->
+  <div class="border-overlay" aria-hidden="true"></div>
+  
+  <!-- Left Column: Icons -->
+  <div class="icons-column">
+    <!-- App Icon -->
+    <AppIcon src={appIconSrc} alt={appTitle} size="sm" />
+    
+    <!-- Category Icons -->
+    <div class="category-icons">
+      <div class="category-icon-wrapper">
+        <CategoryIcon1Component />
+      </div>
+      {showCategoryIcon2 && (
+        <div class="category-icon-wrapper">
+          <CategoryIcon2Component />
+        </div>
+      )}
+    </div>
+  </div>
+  
+  <!-- Right Column: Content -->
+  <div class="content-column">
+    <!-- App Title -->
+    <div class="title-wrapper">
+      <H2 text={appTitle} />
+    </div>
+    
+    <!-- Details Section -->
+    <div class="details-section">
+      <!-- Category Text -->
+      <div class="category-text-wrapper">
+        <span class="category-text">{categoryText}</span>
+      </div>
+      
+      <!-- Stars and Ratings -->
+      <div class="stars-ratings-wrapper">
+        <!-- Stars -->
+        <div class="stars-group">
+          <div class="star-icon-wrapper">
+            <IconStar />
+          </div>
+          <span class="rating-text">{starRating}</span>
+        </div>
+        
+        <!-- Users/Ratings -->
+        <div class="users-group">
+          <div class="users-icon-wrapper">
+            <IconUsers />
+          </div>
+          <span class="rating-text">{userCount}</span>
+        </div>
+      </div>
+      
+      <!-- App Status Tag -->
+      <div class="status-wrapper">
+        <TagAppStatus 
+          text={statusText}
+          variant="card"
+          showHostedChip={statusShowHostedChip}
+          hostedChipVariant={statusHostedChipVariant}
+        >
+          {Astro.slots.has('statusIcon') && (
+            <slot name="statusIcon" slot="icon" />
+          )}
+        </TagAppStatus>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========================================
+     CARD CONTAINER
+     ======================================== */
+  .card-app {
+    position: relative;
+    display: flex;
+    gap: var(--spacing-8);
+    align-items: flex-start;
+    padding: var(--spacing-12);
+    border-radius: var(--radius-md);
+    min-width: 284px;
+    
+    /* Gradient Background */
+    background: linear-gradient(
+      180deg,
+      var(--card-gradient-light-blue-start) 0%,
+      var(--card-gradient-light-blue-end) 100%
+    );
+    
+    /* Make focusable */
+    outline: none;
+    cursor: pointer;
+    
+    /* Transition for smooth state changes */
+    transition: transform 0.15s ease;
+  }
+  
+  /* ========================================
+     BORDER OVERLAY PATTERN
+     ======================================== */
+  .border-overlay {
+    position: absolute;
+    inset: -0.5px;
+    border-radius: calc(var(--radius-md) + 0.5px);
+    border: 1px solid var(--on-surface-light-border-low);
+    pointer-events: none;
+    transition: border-color 0.2s ease, border-width 0.2s ease;
+  }
+  
+  /* Hover State - Override on focus */
+  .card-app:hover:not(:focus-visible) .border-overlay {
+    border-color: var(--on-surface-light-primary);
+  }
+  
+  /* Focus State */
+  .card-app:focus-visible .border-overlay {
+    inset: -1px;
+    border-radius: calc(var(--radius-md) + 1px);
+    border-width: 2px;
+    border-color: var(--on-surface-light-primary);
+  }
+  
+  /* Active/Click State - Tactile feedback */
+  .card-app:active {
+    transform: scale(0.98);
+  }
+  
+  /* ========================================
+     LEFT COLUMN: ICONS
+     ======================================== */
+  .icons-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    align-items: flex-start;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  /* Category Icons Container */
+  .category-icons {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    width: 100%;
+  }
+  
+  .category-icon-wrapper {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-faded);
+  }
+  
+  .category-icon-wrapper :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* ========================================
+     RIGHT COLUMN: CONTENT
+     ======================================== */
+  .content-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    justify-content: center;
+    flex: 1;
+    min-width: 0; /* Allow text truncation */
+  }
+  
+  /* ========================================
+     TITLE SECTION
+     ======================================== */
+  .title-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  /* Override H2 to allow wrapping in card context */
+  .title-wrapper :global(h2) {
+    white-space: normal;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  /* ========================================
+     DETAILS SECTION
+     ======================================== */
+  .details-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-4);
+    width: 100%;
+  }
+  
+  /* ========================================
+     CATEGORY TEXT
+     ======================================== */
+  .category-text-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+  }
+  
+  .category-text {
+    /* Typography - Inter Regular, 10px/16px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xxs-size);
+    line-height: var(--body-xxs-line);
+    letter-spacing: 0;
+    
+    /* Color - Faded text */
+    color: var(--on-surface-light-faded);
+    
+    white-space: nowrap;
+  }
+  
+  /* ========================================
+     STARS AND RATINGS
+     ======================================== */
+  .stars-ratings-wrapper {
+    display: flex;
+    gap: var(--spacing-8);
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Stars Group */
+  .stars-group {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  .star-icon-wrapper {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-regular);
+  }
+  
+  .star-icon-wrapper :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Users Group */
+  .users-group {
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  .users-icon-wrapper {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-regular);
+  }
+  
+  .users-icon-wrapper :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Rating Text (for both stars and users) */
+  .rating-text {
+    /* Typography - Inter Regular, 12px/18px */
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-xs-size);
+    line-height: var(--body-xs-line);
+    letter-spacing: 0;
+    
+    /* Color - Regular text */
+    color: var(--on-surface-light-regular);
+    
+    white-space: nowrap;
+  }
+  
+  /* ========================================
+     STATUS SECTION
+     ======================================== */
+  .status-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: var(--radius-md);
+  }
+</style>

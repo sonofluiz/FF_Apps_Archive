@@ -1,0 +1,138 @@
+---
+/**
+ * ButtonSearch Component
+ * Search button with icon and optional notification badge
+ * 
+ * Props:
+ * - disabled: boolean (default: false) - Shows notification badge when disabled
+ * - onclick: string (optional) - Click handler attribute
+ * 
+ * States:
+ * - Default: Regular opacity with on-surface-light-regular color
+ * - Hover: Primary color (on-surface-light-primary)
+ * - Focus: 4px faded border (keyboard navigation)
+ * - Disabled: Transparent/faded with notification badge visible
+ * 
+ * Features:
+ * - 24×24px button
+ * - Uses MagnifyingGlass icon from navigation icons
+ * - Shows warning notification badge when disabled
+ * - Fully keyboard accessible
+ */
+
+import IconMagnifyingGlass from '../icons/navigation/IconMagnifyingGlass.astro';
+import BadgeNotification from './BadgeNotification.astro';
+
+interface Props {
+  disabled?: boolean;
+  onclick?: string;
+}
+
+const { 
+  disabled = false,
+  onclick
+} = Astro.props;
+---
+
+<button 
+  class="button-search"
+  disabled={disabled}
+  onclick={onclick}
+  aria-label="Search"
+  type="button"
+>
+  <!-- Icon Container -->
+  <div class="icon-container">
+    <IconMagnifyingGlass />
+  </div>
+  
+  <!-- Notification Badge - Only visible when disabled -->
+  {disabled && (
+    <div class="badge-container">
+      <BadgeNotification variant="warning" />
+    </div>
+  )}
+</button>
+
+<style>
+  /* Base Button */
+  .button-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-md);
+    height: var(--icon-md);
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  /* Icon Container */
+  .icon-container {
+    position: relative;
+    width: var(--icon-md);
+    height: var(--icon-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--on-surface-light-regular);
+    transition: color 0.2s ease;
+  }
+
+  .icon-container :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Badge Container - positioned absolute top-right */
+  .badge-container {
+    position: absolute;
+    top: -4px;
+    left: 20px;
+    pointer-events: none;
+  }
+
+  /* ========================================
+     STATE: DEFAULT
+     ======================================== */
+  .button-search {
+    /* Default state uses on-surface-light-regular via icon-container */
+  }
+
+  /* ========================================
+     STATE: HOVER
+     ======================================== */
+  .button-search:hover:not(:disabled):not(:focus-visible) .icon-container {
+    color: var(--on-surface-light-primary);
+  }
+
+  /* ========================================
+     STATE: FOCUS (Keyboard Navigation)
+     ======================================== */
+  .button-search:focus-visible {
+    outline: var(--border-lg) solid var(--on-surface-light-faded);
+    border-radius: var(--radius-md);
+  }
+
+  /* ========================================
+     STATE: DISABLED
+     ======================================== */
+  .button-search:disabled {
+    cursor: not-allowed;
+  }
+
+  .button-search:disabled .icon-container {
+    color: var(--on-surface-light-faded);
+    opacity: 0.4;
+  }
+
+  /* Active press state */
+  .button-search:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+</style>
