@@ -4,6 +4,9 @@ import '../styles/design-tokens.css'
 import '../styles/colors-primitives.css'
 import '../styles/colors-semantic.css'
 
+// Layout Import
+import Layout from '../layouts/base.astro';
+
 // Import all icons
 import * as Icons from '../components/icons/index.js';
 import IconRocketColor from '../components/icons/brand/IconRocketColor.astro';
@@ -83,6 +86,20 @@ const appIconTokens = [
   { name: 'App Icon MD', variable: '--app-icon-md', value: '92px' },
   { name: 'App Icon LG', variable: '--app-icon-lg', value: '138px' },
 ];
+
+// Border & Radius Tokens
+const borderTokens = {
+  radius: [
+    { name: 'Radius MD', variable: '--radius-md', value: '4px' },
+    { name: 'Radius LG', variable: '--radius-lg', value: '12px' },
+  ],
+  thickness: [
+    { name: 'Border SM', variable: '--border-sm', value: '0.5px' },
+    { name: 'Border MD', variable: '--border-md', value: '1px' },
+    { name: 'Border LG', variable: '--border-lg', value: '2px' },
+    { name: 'Border XL', variable: '--border-xl', value: '4px' },
+  ],
+};
 
 // Effect Tokens
 const effectTokens = {
@@ -359,86 +376,158 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
 }, {} as Record<string, typeof semanticColors>);
 ---
 
-<html lang="en">
-  <head>
-    <title>Style Guide</title>
-    <style>
+<Layout title="Style Guide">
+    <style is:global>
       body { 
-        padding: 2rem; 
+        padding: 0;
+        margin: 0;
         font-family: var(--font-inter); 
         color: var(--on-surface-light-regular);
         background: var(--surface-light-low);
+        min-height: 100vh;
       }
-      h1 { 
+
+      .style-guide {
+        background: var(--surface-light-low);
+        min-height: 100vh;
+        padding: var(--spacing-24);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-36);
+      }
+
+      /* Page Header */
+      .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-12);
+      }
+
+      .page-header h1 {
         font-family: var(--font-metropolis);
-        font-size: var(--heading-xxl-size);
-        line-height: var(--heading-xxl-line);
+        font-size: var(--heading-lg-size);
+        line-height: var(--heading-lg-line);
         font-weight: var(--font-weight-bold);
-        margin-top: 2rem; 
-        margin-bottom: 1rem; 
-        border-bottom: 2px solid var(--color-border); 
-        padding-bottom: 1rem; 
+        color: var(--on-surface-light-regular);
+        margin: 0;
       }
-      h2 { 
+
+      .page-header p {
+        font-family: var(--font-inter);
+        font-size: var(--body-lg-size);
+        line-height: var(--body-lg-line);
+        color: var(--on-surface-light-faded);
+        margin: 0;
+      }
+
+      .text-faded {
+        color: var(--on-surface-light-faded);
+      }
+
+      /* Divider */
+      .divider {
+        height: var(--border-md);
+        background: var(--on-surface-light-border-low);
+        width: 100%;
+      }
+
+      /* Component Section (collapsible sections) */
+      .component-section {
+        display: flex;
+        flex-direction: column;
+        border: var(--border-sm) solid var(--on-surface-light-border-low);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background: var(--surface-light-mid);
+        padding: var(--spacing-16) var(--spacing-20);
+        cursor: pointer;
+        transition: background 0.2s ease;
+        border: none;
+        text-align: left;
+      }
+
+      .section-header:hover {
+        background: var(--surface-light-high);
+      }
+
+      .section-header h2 {
+        margin: 0;
         font-family: var(--font-metropolis);
         font-size: var(--heading-md-size);
         line-height: var(--heading-md-line);
-        font-weight: var(--font-weight-bold);
-        color: var(--on-surface-light-primary); 
-        margin-top: 1.5rem; 
-        margin-bottom: 1rem;
-      }
-      summary {
-        cursor: pointer;
-        padding: 0.75rem 1rem;
-        /* reserve space on right for caret */
-        padding-right: 3rem;
-        background: var(--surface-light-low);
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        list-style: none;
-        position: relative;
-      }
-      summary::-webkit-details-marker { display: none; }
-      /* caret moved to the right and absolutely positioned so it stays inline */
-      summary::after {
-        content: "\\25BE"; /* down-pointing triangle */
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        transform-origin: center;
-        transition: transform 0.18s ease-in-out;
-      }
-      details[open] summary::after {
-        transform: translateY(-50%) rotate(180deg);
-      }
-      /* Ensure headings keep original typography when moved inside summary */
-      summary h1 {
-        display: inline-block;
-        margin: 0;
-        font-family: var(--font-metropolis);
-        font-size: var(--heading-xxl-size);
-        line-height: var(--heading-xxl-line);
         font-weight: var(--font-weight-bold);
         color: var(--on-surface-light-regular);
       }
-      h2 {
-        font-family: var(--font-metropolis);
-        font-size: var(--heading-md-size);
-        line-height: var(--heading-md-line);
-        font-weight: var(--font-weight-bold);
-        color: var(--on-surface-light-primary); 
-        margin-top: 1.5rem; 
-        margin-bottom: 1rem;
+
+      .toggle-icon {
+        flex-shrink: 0;
+        color: var(--on-surface-light-regular);
+        transition: transform 0.2s ease;
       }
+
+      .section-header[aria-expanded="false"] .toggle-icon {
+        transform: rotate(-90deg);
+      }
+
+      .section-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+      }
+
+      .section-content[aria-hidden="false"] {
+        display: block;
+        max-height: 10000px;
+      }
+
+      .section-content[aria-hidden="true"] {
+        display: block;
+        max-height: 0;
+        padding: 0 var(--spacing-16);
+      }
+
+      .content-inner {
+        padding: var(--spacing-24) var(--spacing-16);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-36);
+      }
+
+      /* Section */
+      .section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-16);
+      }
+
+      .section h3 {
+        font-family: var(--font-metropolis);
+        font-size: var(--heading-xs-size);
+        line-height: var(--heading-xs-line);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+        margin: 0;
+      }
+
       p, .description {
         font-family: var(--font-inter);
         font-size: var(--body-md-size);
         line-height: var(--body-md-line);
         font-weight: var(--font-weight-regular);
+        color: var(--on-surface-light-regular);
       }
+
       .token-swatch { 
         display: flex; 
         align-items: center; 
@@ -766,360 +855,653 @@ const groupedSemanticColors = semanticColors.reduce((acc, color) => {
         color: var(--on-surface-light-regular);
         word-break: break-word;
       }
-      /* Collapsible section styles */
-      details {
-        margin-bottom: 1.5rem;
-        border-radius: 6px;
+
+      /* Border Radius Styles */
+      .border-radius-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--spacing-24);
+        margin-top: var(--spacing-20);
+      }
+      .border-radius-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-12);
+      }
+      .border-radius-visual {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .border-radius-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
+      }
+      .border-radius-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-md-size);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+      }
+      .border-radius-variable {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-faded);
+      }
+      .border-radius-value {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-regular);
+      }
+
+      /* Border Thickness Styles */
+      .border-thickness-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--spacing-24);
+        margin-top: var(--spacing-20);
+      }
+      .border-thickness-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-12);
+      }
+      .border-thickness-visual {
+        width: 100%;
+        height: 120px;
+        background: var(--surface-light-mid);
+      }
+      .border-thickness-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
+      }
+      .border-thickness-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-md-size);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
+      }
+      .border-thickness-variable {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-faded);
+      }
+      .border-thickness-value {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-regular);
+      }
+
+      /* Effect Visual Styles */
+      .effect-visual-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: var(--spacing-24);
+        margin-top: var(--spacing-20);
+        margin-bottom: var(--spacing-32);
+      }
+      .effect-visual-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-12);
+      }
+      .effect-visual-demo {
+        width: 100%;
+        height: 160px;
+        border-radius: var(--radius-md);
         overflow: hidden;
-        border: 1px solid var(--color-border);
-        background: transparent;
+        position: relative;
+        border: var(--border-md) solid var(--on-surface-light-border-high);
       }
-      summary {
-        cursor: pointer;
-        padding: 0.75rem 1rem;
-        background: var(--surface-light-low);
-        display: block;
-        list-style: none;
+      .effect-visual-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
       }
-      summary::-webkit-details-marker { display: none; }
-      summary::before {
-        content: "\25BE"; /* down-pointing triangle */
-        display: inline-block;
-        margin-right: 0.75rem;
-        transform-origin: center;
-        transition: transform 0.18s ease-in-out;
+      .effect-visual-name {
+        font-family: var(--font-inter);
+        font-size: var(--body-md-size);
+        font-weight: var(--font-weight-bold);
+        color: var(--on-surface-light-regular);
       }
-      details[open] summary::before {
-        transform: rotate(180deg);
+      .effect-visual-variable {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-faded);
       }
-      summary h1 { display: inline-block; margin: 0; }
+      .effect-visual-value {
+        font-family: var(--font-inter);
+        font-size: var(--body-sm-size);
+        color: var(--on-surface-light-regular);
+      }
+
+      /* Blur Demo */
+      .blur-demo {
+        background: var(--surface-light-mid);
+      }
+      .blur-background {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--violet-50), var(--pink-50), var(--blue-50));
+        opacity: 0.8;
+      }
+      .blur-layer {
+        position: absolute;
+        inset: var(--spacing-24);
+        background: rgb(from var(--neutral-white-strong) r g b / 0.3);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Shadow Demo */
+      .shadow-demo {
+        background: var(--surface-light-mid);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .shadow-box {
+        width: 100px;
+        height: 100px;
+        background: var(--surface-light-mid);
+        border-radius: var(--radius-lg);
+      }
+
+      /* Opacity Demo */
+      .opacity-demo {
+        background: var(--surface-light-mid);
+      }
+      .opacity-background {
+        position: absolute;
+        inset: 0;
+        background: repeating-conic-gradient(var(--neutral-gray-light) 0% 25%, var(--neutral-white-strong) 0% 50%) 50% / var(--spacing-20) var(--spacing-20);
+      }
+      .opacity-layer {
+        position: absolute;
+        inset: 0;
+        background: var(--violet-50);
+      }
     </style>
-  </head>
-  <body>
-    <div class="logo-section">
-      <h1>Logos</h1>
-      
-      <h2>Icon Rocket Color</h2>
-      <div class="logo-variants">
-        <div class="logo-variant logo-variant-gradient">
-          <div class="logo-display">
-            <IconRocketColorGradient size={100} />
-          </div>
-          <div class="logo-variant-label">Brand Gradient</div>
-        </div>
-        <div class="logo-variant logo-variant-primary">
-          <div class="logo-display">
-            <IconRocketColor size={100} />
-          </div>
-          <div class="logo-variant-label">Primary Color</div>
-        </div>
-      </div>
 
-      <h2>Header Logo</h2>
-      <div class="logo-variants">
-        <div class="logo-variant logo-variant-gradient">
-          <div class="logo-display">
-            <IconHeaderLogoGradient size={100} />
-          </div>
-          <div class="logo-variant-label">Brand Gradient</div>
+<div class="style-guide">
+    <main class="container">
+    <header class="page-header">
+        <h1>Style Guide</h1>
+        <p>A comprehensive guide to the design tokens and assets used in our projects.</p>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- Logos Section -->
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Logos</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Icon Rocket Color</h2>
+            <div class="logo-variants">
+            <div class="logo-variant logo-variant-gradient">
+                <div class="logo-display">
+                <IconRocketColorGradient size={100} />
+                </div>
+                <div class="logo-variant-label">Brand Gradient</div>
+            </div>
+            <div class="logo-variant logo-variant-primary">
+                <div class="logo-display">
+                <IconRocketColor size={100} />
+                </div>
+                <div class="logo-variant-label">Primary Color</div>
+            </div>
+            </div>
+
+            <h2>Header Logo</h2>
+            <div class="logo-variants">
+            <div class="logo-variant logo-variant-gradient">
+                <div class="logo-display">
+                <IconHeaderLogoGradient size={100} />
+                </div>
+                <div class="logo-variant-label">Brand Gradient</div>
+            </div>
+            <div class="logo-variant logo-variant-primary">
+                <div class="logo-display">
+                <IconHeaderLogo size={100} />
+                </div>
+                <div class="logo-variant-label">Primary Color</div>
+            </div>
+            </div>
         </div>
-        <div class="logo-variant logo-variant-primary">
-          <div class="logo-display">
-            <IconHeaderLogo size={100} />
-          </div>
-          <div class="logo-variant-label">Primary Color</div>
         </div>
-      </div>
     </div>
 
-    <h1>Typography</h1>
-    
-    <h2>Font Families</h2>
-    <div class="font-families-grid">
-      {fontFamilies.map(font => (
-        <div class="font-family-item">
-          <div class="font-family-preview" style={`font-family: ${font.value}`}>{font.name}</div>
-          <div class="font-family-name">{font.name}</div>
-          <div class="font-family-variable">{font.variable}</div>
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Typography</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Font Families</h2>
+            <div class="font-families-grid">
+            {fontFamilies.map(font => (
+                <div class="font-family-item">
+                <div class="font-family-preview" style={`font-family: ${font.value}`}>{font.name}</div>
+                <div class="font-family-name">{font.name}</div>
+                <div class="font-family-variable">{font.variable}</div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Heading Styles (Metropolis Bold)</h2>
+            <div class="typography-grid">
+            {headingTokens.map(token => (
+                <div class="typography-sample">
+                <div class="typography-preview" style={`font-family: var(--font-metropolis); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+                    {token.name}
+                </div>
+                <div class="typography-info">
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size Variable</span>
+                    {token.sizeVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size</span>
+                    {token.size}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height Variable</span>
+                    {token.lineVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height</span>
+                    {token.line}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight Variable</span>
+                    {token.weightVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight</span>
+                    {token.weight}
+                    </div>
+                </div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Body Styles (Inter Regular)</h2>
+            <div class="typography-grid">
+            {bodyTokens.map(token => (
+                <div class="typography-sample">
+                <div class="typography-preview" style={`font-family: var(--font-inter); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+                    The quick brown fox jumps over the lazy dog
+                </div>
+                <div class="typography-info">
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Name</span>
+                    {token.name}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size Variable</span>
+                    {token.sizeVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size</span>
+                    {token.size}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height Variable</span>
+                    {token.lineVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height</span>
+                    {token.line}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight Variable</span>
+                    {token.weightVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight</span>
+                    {token.weight}
+                    </div>
+                </div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Brand Styles (Public Sans)</h2>
+            <div class="typography-grid">
+            {brandTokens.map(token => (
+                <div class="typography-sample">
+                <div class="typography-preview" style={`font-family: var(--font-public-sans); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
+                    {token.name}
+                </div>
+                <div class="typography-info">
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size Variable</span>
+                    {token.sizeVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Size</span>
+                    {token.size}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height Variable</span>
+                    {token.lineVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Line Height</span>
+                    {token.line}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight Variable</span>
+                    {token.weightVar}
+                    </div>
+                    <div class="typography-info-item">
+                    <span class="typography-info-label">Weight</span>
+                    {token.weight}
+                    </div>
+                </div>
+                </div>
+            ))}
+            </div>
         </div>
-      ))}
+        </div>
     </div>
 
-    <h2>Heading Styles (Metropolis Bold)</h2>
-    <div class="typography-grid">
-      {headingTokens.map(token => (
-        <div class="typography-sample">
-          <div class="typography-preview" style={`font-family: var(--font-metropolis); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
-            {token.name}
-          </div>
-          <div class="typography-info">
-            <div class="typography-info-item">
-              <span class="typography-info-label">Size Variable</span>
-              {token.sizeVar}
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Primitive Colors</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            {Object.entries(groupedPrimitiveColors).map(([groupName, colors]) => (
+            <div class="color-group">
+                <h2>{groupName}</h2>
+                <div class="colors-grid">
+                {colors.map(token => (
+                    <div class="token-swatch">
+                    <div class="token-box" style={`background: ${token.value}`}></div>
+                    <div>
+                        <div class="color-name">{token.name}</div>
+                        <div class="color-value">{token.value}</div>
+                    </div>
+                    </div>
+                ))}
+                </div>
             </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Size</span>
-              {token.size}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Line Height Variable</span>
-              {token.lineVar}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Line Height</span>
-              {token.line}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Weight Variable</span>
-              {token.weightVar}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Weight</span>
-              {token.weight}
-            </div>
-          </div>
+            ))}
         </div>
-      ))}
+        </div>
     </div>
 
-    <h2>Body Styles (Inter Regular)</h2>
-    <div class="typography-grid">
-      {bodyTokens.map(token => (
-        <div class="typography-sample">
-          <div class="typography-preview" style={`font-family: var(--font-inter); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
-            The quick brown fox jumps over the lazy dog
-          </div>
-          <div class="typography-info">
-            <div class="typography-info-item">
-              <span class="typography-info-label">Name</span>
-              {token.name}
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Semantic Colors</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            {Object.entries(groupedSemanticColors).map(([groupName, colors]) => (
+            <div class="color-group">
+                <h2>{groupName}</h2>
+                <div class="colors-grid">
+                {colors.map(token => (
+                    <div class="token-swatch">
+                    <div class="token-box" style={`background: ${token.value}`}></div>
+                    <div>
+                        <div class="color-name">{token.name}</div>
+                        <div class="color-value">{token.value}</div>
+                    </div>
+                    </div>
+                ))}
+                </div>
             </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Size Variable</span>
-              {token.sizeVar}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Size</span>
-              {token.size}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Line Height Variable</span>
-              {token.lineVar}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Line Height</span>
-              {token.line}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Weight Variable</span>
-              {token.weightVar}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Weight</span>
-              {token.weight}
-            </div>
-          </div>
+            ))}
         </div>
-      ))}
+        </div>
     </div>
 
-    <h2>Brand Styles (Public Sans)</h2>
-    <div class="typography-grid">
-      {brandTokens.map(token => (
-        <div class="typography-sample">
-          <div class="typography-preview" style={`font-family: var(--font-public-sans); font-size: ${token.size}; line-height: ${token.line}; font-weight: ${token.weight};`}>
-            {token.name}
-          </div>
-          <div class="typography-info">
-            <div class="typography-info-item">
-              <span class="typography-info-label">Size Variable</span>
-              {token.sizeVar}
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Icons</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            {iconGroups.map(group => (
+            <div class="icon-group">
+                <h2>{group.name}</h2>
+                <div class="icon-cards-grid">
+                {Object.entries(group.icons).map(([name, IconComponent]) => (
+                    <div class="icon-card">
+                    <div class="icon-card-visual">
+                        <IconComponent title={name} />
+                    </div>
+                    <div class="icon-card-name">{name}</div>
+                    </div>
+                ))}
+                </div>
             </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Size</span>
-              {token.size}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Line Height Variable</span>
-              {token.lineVar}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Line Height</span>
-              {token.line}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Weight Variable</span>
-              {token.weightVar}
-            </div>
-            <div class="typography-info-item">
-              <span class="typography-info-label">Weight</span>
-              {token.weight}
-            </div>
-          </div>
+            ))}
         </div>
-      ))}
+        </div>
     </div>
 
-    <h1>Primitive Colors</h1>
-    {Object.entries(groupedPrimitiveColors).map(([groupName, colors]) => (
-      <div class="color-group">
-        <h2>{groupName}</h2>
-        <div class="colors-grid">
-          {colors.map(token => (
-            <div class="token-swatch">
-              <div class="token-box" style={`background: ${token.value}`}></div>
-              <div>
-                <div class="color-name">{token.name}</div>
-                <div class="color-value">{token.value}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    ))}
+    <div class="divider"></div>
 
-    <h1>Semantic Colors</h1>
-    {Object.entries(groupedSemanticColors).map(([groupName, colors]) => (
-      <div class="color-group">
-        <h2>{groupName}</h2>
-        <div class="colors-grid">
-          {colors.map(token => (
-            <div class="token-swatch">
-              <div class="token-box" style={`background: ${token.value}`}></div>
-              <div>
-                <div class="color-name">{token.name}</div>
-                <div class="color-value">{token.value}</div>
-              </div>
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Spacing</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <div class="spacing-grid">
+            {spacingTokens.map(token => (
+                <div class="spacing-item">
+                <div class="spacing-visual" style={`height: ${token.value}`}></div>
+                <div class="spacing-label">{token.name}</div>
+                <div class="spacing-variable">{token.variable}</div>
+                <div class="spacing-value">{token.value}</div>
+                </div>
+            ))}
             </div>
-          ))}
         </div>
-      </div>
-    ))}
-
-    <h1>Icons</h1>
-    {iconGroups.map(group => (
-      <div class="icon-group">
-        <h2>{group.name}</h2>
-        <div class="icon-cards-grid">
-          {Object.entries(group.icons).map(([name, IconComponent]) => (
-            <div class="icon-card">
-              <div class="icon-card-visual">
-                <IconComponent title={name} />
-              </div>
-              <div class="icon-card-name">{name}</div>
-            </div>
-          ))}
         </div>
-      </div>
-    ))}
-
-    <h1>Spacing</h1>
-    <div class="spacing-grid">
-      {spacingTokens.map(token => (
-        <div class="spacing-item">
-          <div class="spacing-visual" style={`height: ${token.value}`}></div>
-          <div class="spacing-label">{token.name}</div>
-          <div class="spacing-variable">{token.variable}</div>
-          <div class="spacing-value">{token.value}</div>
-        </div>
-      ))}
     </div>
 
-    <h1>Sizing</h1>
-    
-    <h2>Icon Sizes</h2>
-    <div class="size-grid">
-      {iconTokens.map(token => (
-        <div class="size-item">
-          <div class="size-visual" style={`width: ${token.value}; height: ${token.value}`}>{token.value}</div>
-          <div class="size-name">{token.name}</div>
-          <div class="size-variable">{token.variable}</div>
-          <div class="size-value">{token.value}</div>
+    <div class="divider"></div>
+
+    <!-- Borders & Radius Section -->
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Borders & Radius</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Border Radius</h2>
+            <div class="border-radius-grid">
+            {borderTokens.radius.map(token => (
+                <div class="border-radius-item">
+                <div class="border-radius-visual" style={`border-radius: var(${token.variable}); background: var(--surface-light-primary-gradient-start); border: var(--border-md) solid var(--on-surface-light-border-high);`}></div>
+                <div class="border-radius-info">
+                    <div class="border-radius-name">{token.name}</div>
+                    <div class="border-radius-variable">{token.variable}</div>
+                    <div class="border-radius-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
+            </div>
+
+            <h2>Border Thickness</h2>
+            <div class="border-thickness-grid">
+            {borderTokens.thickness.map(token => (
+                <div class="border-thickness-item">
+                <div class="border-thickness-visual" style={`border: var(${token.variable}) solid var(--on-surface-light-primary); border-radius: var(--radius-md);`}></div>
+                <div class="border-thickness-info">
+                    <div class="border-thickness-name">{token.name}</div>
+                    <div class="border-thickness-variable">{token.variable}</div>
+                    <div class="border-thickness-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
+            </div>
         </div>
-      ))}
+        </div>
     </div>
 
-    <h2>App Icon Sizes</h2>
-    <div class="size-grid">
-      {appIconTokens.map(token => (
-        <div class="size-item">
-          <div class="size-visual" style={`width: ${token.value}; height: ${token.value}`}>{token.value}</div>
-          <div class="size-name">{token.name}</div>
-          <div class="size-variable">{token.variable}</div>
-          <div class="size-value">{token.value}</div>
+    <div class="divider"></div>
+
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Sizing</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Icon Sizes</h2>
+            <div class="size-grid">
+            {iconTokens.map(token => (
+                <div class="size-item">
+                <div class="size-visual" style={`width: ${token.value}; height: ${token.value}`}>{token.value}</div>
+                <div class="size-name">{token.name}</div>
+                <div class="size-variable">{token.variable}</div>
+                <div class="size-value">{token.value}</div>
+                </div>
+            ))}
+            </div>
+
+            <h2>App Icon Sizes</h2>
+            <div class="size-grid">
+            {appIconTokens.map(token => (
+                <div class="size-item">
+                <div class="size-visual" style={`width: ${token.value}; height: ${token.value}`}>{token.value}</div>
+                <div class="size-name">{token.name}</div>
+                <div class="size-variable">{token.variable}</div>
+                <div class="size-value">{token.value}</div>
+                </div>
+            ))}
+            </div>
         </div>
-      ))}
+        </div>
     </div>
 
-    <h1>Effects</h1>
-    <div class="effects-grid">
-      <div class="effect-section">
-        <h3>Blur</h3>
-        <div class="effect-items">
-          {effectTokens.blur.map(token => (
-            <div class="effect-item">
-              <div class="effect-item-name">{token.name}</div>
-              <div class="effect-item-variable">{token.variable}</div>
-              <div class="effect-item-value">{token.value}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <div class="divider"></div>
 
-      <div class="effect-section">
-        <h3>Shadow</h3>
-        <div class="effect-items">
-          {effectTokens.shadow.map(token => (
-            <div class="effect-item">
-              <div class="effect-item-name">{token.name}</div>
-              <div class="effect-item-variable">{token.variable}</div>
-              <div class="effect-item-value">{token.value}</div>
+    <div class="component-section">
+        <button class="section-header" data-toggle-section aria-expanded="false">
+        <h2>Effects</h2>
+        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </button>
+        <div class="section-content" data-section-content aria-hidden="true">
+        <div class="content-inner">
+            <h2>Blur</h2>
+            <div class="effect-visual-grid">
+            {effectTokens.blur.map(token => (
+                <div class="effect-visual-item">
+                <div class="effect-visual-demo blur-demo">
+                    <div class="blur-background"></div>
+                    <div class="blur-layer" style={`backdrop-filter: blur(var(${token.variable})); -webkit-backdrop-filter: blur(var(${token.variable}));`}></div>
+                </div>
+                <div class="effect-visual-info">
+                    <div class="effect-visual-name">{token.name}</div>
+                    <div class="effect-visual-variable">{token.variable}</div>
+                    <div class="effect-visual-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
             </div>
-          ))}
-        </div>
-      </div>
 
-      <div class="effect-section">
-        <h3>Opacity</h3>
-        <div class="effect-items">
-          {effectTokens.opacity.map(token => (
-            <div class="effect-item">
-              <div class="effect-item-name">{token.name}</div>
-              <div class="effect-item-variable">{token.variable}</div>
-              <div class="effect-item-value">{token.value}</div>
+            <h2>Shadow</h2>
+            <div class="effect-visual-grid">
+            {effectTokens.shadow.map(token => (
+                <div class="effect-visual-item">
+                <div class="effect-visual-demo shadow-demo">
+                    <div class="shadow-box" style={`box-shadow: var(${token.variable});`}></div>
+                </div>
+                <div class="effect-visual-info">
+                    <div class="effect-visual-name">{token.name}</div>
+                    <div class="effect-visual-variable">{token.variable}</div>
+                    <div class="effect-visual-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
             </div>
-          ))}
+
+            <h2>Opacity</h2>
+            <div class="effect-visual-grid">
+            {effectTokens.opacity.map(token => (
+                <div class="effect-visual-item">
+                <div class="effect-visual-demo opacity-demo">
+                    <div class="opacity-background"></div>
+                    <div class="opacity-layer" style={`opacity: var(${token.variable});`}></div>
+                </div>
+                <div class="effect-visual-info">
+                    <div class="effect-visual-name">{token.name}</div>
+                    <div class="effect-visual-variable">{token.variable}</div>
+                    <div class="effect-visual-value">{token.value}</div>
+                </div>
+                </div>
+            ))}
+            </div>
         </div>
-      </div>
+        </div>
     </div>
-  </body>
+</main>
+</div>
   <script>
-    // Wrap each top-level H1 and its following siblings until the next H1
-    (function(){
-      // Wrap every H1 (wherever it appears) into a <details> with its section content
-      const h1s = Array.from(document.querySelectorAll('h1'));
-      for (let i = 0; i < h1s.length; i++) {
-        const h1 = h1s[i];
-        const nextH1 = h1s[i + 1] || null;
-
-        const details = document.createElement('details');
-        // collapsed by default
-        details.open = false;
-        const summary = document.createElement('summary');
-
-        // Insert details at the H1 position, move the H1 into the summary
-        h1.parentNode.insertBefore(details, h1);
-        summary.appendChild(h1);
-        details.appendChild(summary);
-
-        // Move following siblings into the details until the next H1 in the original list
-        let node = details.nextSibling;
-        while (node && node !== nextH1) {
-          const next = node.nextSibling;
-          details.appendChild(node);
-          node = next;
-        }
+    // Toggle section content
+    function toggleSection(event) {
+      const header = event.target.closest('.section-header');
+      if (header) {
+        const content = header.nextElementSibling;
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        
+        header.setAttribute('aria-expanded', String(!isExpanded));
+        content.setAttribute('aria-hidden', String(isExpanded));
       }
-    })();
+    }
+
+    // Initialize toggle handlers
+    document.querySelectorAll('[data-toggle-section]').forEach(button => {
+      button.addEventListener('click', toggleSection);
+    });
   </script>
-</html>
+</Layout>
