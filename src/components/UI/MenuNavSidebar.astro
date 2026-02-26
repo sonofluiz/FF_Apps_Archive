@@ -7,12 +7,11 @@
  * 
  * Features:
  * - App Types section with 5 options (All, Packaged, Privileged, Hosted, Dead Hosted)
- * - Categories section with full category list
+ * - Categories section with full category list (27 categories)
  * - Uses H2 headings for section titles
  * - Uses ButtonAppTypes (label variant) for app types
- * - Uses ButtonCategory (label variant) for categories
- * - Proper icon associations for each item
- * - Max width: 210px (matches design spec)
+ * - Uses ButtonCategory (label variant) for categories with automatic icon selection
+ * - Width: 260px (matches design spec)
  * 
  * Design Tokens:
  * - Spacing: var(--spacing-24) between sections, var(--spacing-12) between header and buttons
@@ -32,34 +31,6 @@ import IconPackage from '../icons/app-types/IconPackage.astro';
 import IconDownload from '../icons/app-types/IconDownload.astro';
 import IconCloud from '../icons/app-types/IconCloud.astro';
 import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
-
-// Import Categories icons (FILLED versions for label variant)
-import IconBooksFilled from '../icons/categories/IconBooksFilled.astro';
-import IconBookOpenTextFilled from '../icons/categories/IconBookOpenTextFilled.astro';
-import IconBuildingsFilled from '../icons/categories/IconBuildingsFilled.astro';
-import IconGraduationCapFilled from '../icons/categories/IconGraduationCapFilled.astro';
-import IconFilmStripFilled from '../icons/categories/IconFilmStripFilled.astro';
-import IconWineFilled from '../icons/categories/IconWineFilled.astro';
-import IconGameControllerFilled from '../icons/categories/IconGameControllerFilled.astro';
-import IconHeartbeatFilled from '../icons/categories/IconHeartbeatFilled.astro';
-import IconMaskHappyFilled from '../icons/categories/IconMaskHappyFilled.astro';
-import IconGlobeFilled from '../icons/categories/IconGlobeFilled.astro';
-import IconPinwheelFilled from '../icons/categories/IconPinwheelFilled.astro';
-import IconIslandFilled from '../icons/categories/IconIslandFilled.astro';
-import IconCompassFilled from '../icons/categories/IconCompassFilled.astro';
-import IconMusicNotesFilled from '../icons/categories/IconMusicNotesFilled.astro';
-import IconNewspaperFilled from '../icons/categories/IconNewspaperFilled.astro';
-import IconCloudSunFilled from '../icons/categories/IconCloudSunFilled.astro';
-import IconUserCircleFilled from '../icons/categories/IconUserCircleFilled.astro';
-import IconCameraFilled from '../icons/categories/IconCameraFilled.astro';
-import IconGearFineFilled from '../icons/categories/IconGearFineFilled.astro';
-import IconQuestionFilled from '../icons/categories/IconQuestionFilled.astro';
-import IconAtomFilled from '../icons/categories/IconAtomFilled.astro';
-import IconShoppingCartFilled from '../icons/categories/IconShoppingCartFilled.astro';
-import IconRadioFilled from '../icons/categories/IconRadioFilled.astro';
-import IconTennisBallFilled from '../icons/categories/IconTennisBallFilled.astro';
-import IconAirplaneTiltFilled from '../icons/categories/IconAirplaneTiltFilled.astro';
-import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
 ---
 
 <nav class="menu-nav-sidebar" aria-label="Main navigation">
@@ -82,7 +53,7 @@ import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
       <ButtonAppTypes 
         variant="label" 
         label="Packaged"
-        iconBgColor="--app-icon-bg-light-blue"
+        iconBgColor="--app-icon-bg-light-yellow"
         active={false}
       >
         <IconPackage slot="icon" size={16} />
@@ -124,117 +95,33 @@ import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
     </div>
     
     <div class="button-list">
-      <ButtonCategory variant="label" label="Books" active={false}>
-        <IconBooksFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Books & Comics" active={false}>
-        <IconBookOpenTextFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Business" active={false}>
-        <IconBuildingsFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Education" active={false}>
-        <IconGraduationCapFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Entertainment" active={false}>
-        <IconFilmStripFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Food & Drink" active={false}>
-        <IconWineFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Games" active={false}>
-        <IconGameControllerFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Health & Fitness" active={false}>
-        <IconHeartbeatFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Humor" active={false}>
-        <IconMaskHappyFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Internet" active={false}>
-        <IconGlobeFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Kids" active={false}>
-        <IconPinwheelFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Internet" active={false}>
-        <IconGlobeFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Lifestyle" active={false}>
-        <IconIslandFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Maps & Navigation" active={false}>
-        <IconCompassFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Music" active={false}>
-        <IconMusicNotesFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="News" active={false}>
-        <IconNewspaperFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="News & Weather" active={false}>
-        <IconCloudSunFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Personalization" active={false}>
-        <IconUserCircleFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Photo & Video" active={false}>
-        <IconCameraFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Productivity" active={false}>
-        <IconGearFineFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Reference" active={false}>
-        <IconQuestionFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Science & Tech" active={false}>
-        <IconAtomFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Shopping" active={false}>
-        <IconShoppingCartFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Social" active={false}>
-        <IconRadioFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Sports" active={false}>
-        <IconTennisBallFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Travel" active={false}>
-        <IconAirplaneTiltFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Utilities" active={false}>
-        <IconHammerFilled slot="icon" size={14} />
-      </ButtonCategory>
-      
-      <ButtonCategory variant="label" label="Weather" active={false}>
-        <IconCloudSunFilled slot="icon" size={14} />
-      </ButtonCategory>
+      <ButtonCategory variant="label" category="Books" active={false} />
+      <ButtonCategory variant="label" category="Books & Comics" active={false} />
+      <ButtonCategory variant="label" category="Business" active={false} />
+      <ButtonCategory variant="label" category="Education" active={false} />
+      <ButtonCategory variant="label" category="Entertainment" active={false} />
+      <ButtonCategory variant="label" category="Food & Drink" active={false} />
+      <ButtonCategory variant="label" category="Games" active={false} />
+      <ButtonCategory variant="label" category="Health & Fitness" active={false} />
+      <ButtonCategory variant="label" category="Humor" active={false} />
+      <ButtonCategory variant="label" category="Internet" active={false} />
+      <ButtonCategory variant="label" category="Kids" active={false} />
+      <ButtonCategory variant="label" category="Lifestyle" active={false} />
+      <ButtonCategory variant="label" category="Maps & Navigation" active={false} />
+      <ButtonCategory variant="label" category="Music" active={false} />
+      <ButtonCategory variant="label" category="News" active={false} />
+      <ButtonCategory variant="label" category="News & Weather" active={false} />
+      <ButtonCategory variant="label" category="Personalization" active={false} />
+      <ButtonCategory variant="label" category="Photo & Video" active={false} />
+      <ButtonCategory variant="label" category="Productivity" active={false} />
+      <ButtonCategory variant="label" category="Reference" active={false} />
+      <ButtonCategory variant="label" category="Science & Tech" active={false} />
+      <ButtonCategory variant="label" category="Shopping" active={false} />
+      <ButtonCategory variant="label" category="Social" active={false} />
+      <ButtonCategory variant="label" category="Sports" active={false} />
+      <ButtonCategory variant="label" category="Travel" active={false} />
+      <ButtonCategory variant="label" category="Utilities" active={false} />
+      <ButtonCategory variant="label" category="Weather" active={false} />
     </div>
   </div>
 </nav>
@@ -245,9 +132,8 @@ import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
     display: flex;
     flex-direction: column;
     gap: var(--spacing-24);
-    width: 100%;
-    max-width: 210px;
-    padding: 0;
+    width: 260px;
+    padding: var(--spacing-16) 0 var(--spacing-24) 0;
     margin: 0;
     background: var(--surface-light-low);
     border-right: var(--border-sm) solid var(--on-surface-light-border-low);
@@ -259,6 +145,7 @@ import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
     flex-direction: column;
     gap: var(--spacing-12);
     width: 100%;
+    padding: 0 var(--spacing-36) 0 var(--spacing-36);
   }
 
   /* Section Header */

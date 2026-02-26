@@ -9,22 +9,15 @@
  * - Must contain 1-2 category buttons (never less than 1 or more than 2)
  * 
  * Props:
- * @param categories - Array of 1-2 category items with label and icon component
+ * @param categories - Array of 1-2 category names (e.g., ['Games', 'Books'])
  * 
  * Usage:
- * <MenuAppCategories categories={[
- *   { label: 'Games', Icon: IconGameControllerRegular },
- *   { label: 'Books', Icon: IconBooksRegular }
- * ]} />
+ * <MenuAppCategories categories={['Games', 'Books']} />
+ * <MenuAppCategories categories={['Music']} />
  */
 
-interface CategoryItem {
-  label: string;
-  Icon: any; // Astro component reference
-}
-
 interface Props {
-  categories?: CategoryItem[];
+  categories?: string[];
 }
 
 const { categories = [] } = Astro.props;
@@ -40,9 +33,7 @@ import ButtonCategory from './ButtonCategory.astro';
 
 <div class="menu-container">
   {categories.map((category) => (
-    <ButtonCategory variant="chip" label={category.label}>
-      <category.Icon slot="icon" />
-    </ButtonCategory>
+    <ButtonCategory variant="chip" category={category} />
   ))}
 </div>
 

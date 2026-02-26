@@ -17,40 +17,157 @@
  * 
  * Props:
  * @param variant - Button variant: 'label' | 'chip' | 'block' | 'inline'
- * @param label - Button text
+ * @param category - Category name (e.g., 'Music', 'Games') - automatically selects correct icon and displays as label
  * @param active - Active state (label & inline variants)
  * @param onclick - Optional click handler
  * 
- * Usage with custom icon:
- * FOR LABEL VARIANT - Use filled icons:
- * <ButtonCategory variant="label" label="Books">
- *   <IconBooksFilled slot="icon" />
- * </ButtonCategory>
- * 
- * FOR OTHER VARIANTS - Use regular icons:
- * <ButtonCategory variant="chip" label="Books">
- *   <IconBooksRegular slot="icon" />
- * </ButtonCategory>
+ * Usage:
+ * <ButtonCategory variant="label" category="Music" />
+ * <ButtonCategory variant="chip" category="Games" />
+ * <ButtonCategory variant="block" category="Travel" />
+ * <ButtonCategory variant="inline" category="Shopping" />
  */
 
 interface Props {
   variant?: 'label' | 'chip' | 'block' | 'inline';
-  label?: string;
+  category?: string;
   active?: boolean;
   onclick?: string;
 }
 
 const { 
   variant = 'label',
-  label = 'Books',
+  category = 'Books',
   active = false,
   onclick
 } = Astro.props;
 
-// Import default icon from existing categories (Regular weight)
+// Import ALL category icons - Regular variants
+import IconAirplaneTiltRegular from '../icons/categories/IconAirplaneTiltRegular.astro';
+import IconAtomRegular from '../icons/categories/IconAtomRegular.astro';
+import IconBookOpenTextRegular from '../icons/categories/IconBookOpenTextRegular.astro';
 import IconBooksRegular from '../icons/categories/IconBooksRegular.astro';
+import IconBuildingsRegular from '../icons/categories/IconBuildingsRegular.astro';
+import IconCameraRegular from '../icons/categories/IconCameraRegular.astro';
+import IconChartPieSliceRegular from '../icons/categories/IconChartPieSliceRegular.astro';
+import IconCloudSunRegular from '../icons/categories/IconCloudSunRegular.astro';
+import IconCompassRegular from '../icons/categories/IconCompassRegular.astro';
+import IconFilmStripRegular from '../icons/categories/IconFilmStripRegular.astro';
+import IconGameControllerRegular from '../icons/categories/IconGameControllerRegular.astro';
+import IconGearFineRegular from '../icons/categories/IconGearFineRegular.astro';
+import IconGlobeRegular from '../icons/categories/IconGlobeRegular.astro';
+import IconGraduationCapRegular from '../icons/categories/IconGraduationCapRegular.astro';
+import IconHammerRegular from '../icons/categories/IconHammerRegular.astro';
+import IconHeartbeatRegular from '../icons/categories/IconHeartbeatRegular.astro';
+import IconIslandRegular from '../icons/categories/IconIslandRegular.astro';
+import IconMaskHappyRegular from '../icons/categories/IconMaskHappyRegular.astro';
+import IconMusicNotesRegular from '../icons/categories/IconMusicNotesRegular.astro';
+import IconNewspaperRegular from '../icons/categories/IconNewspaperRegular.astro';
+import IconPinwheelRegular from '../icons/categories/IconPinwheelRegular.astro';
+import IconQuestionRegular from '../icons/categories/IconQuestionRegular.astro';
+import IconRadioRegular from '../icons/categories/IconRadioRegular.astro';
+import IconShoppingCartRegular from '../icons/categories/IconShoppingCartRegular.astro';
+import IconTennisBallRegular from '../icons/categories/IconTennisBallRegular.astro';
+import IconUserCircleRegular from '../icons/categories/IconUserCircleRegular.astro';
+import IconWineRegular from '../icons/categories/IconWineRegular.astro';
 
-const hasIcon = Astro.slots.has('icon');
+// Import ALL category icons - Filled variants
+import IconAirplaneTiltFilled from '../icons/categories/IconAirplaneTiltFilled.astro';
+import IconAtomFilled from '../icons/categories/IconAtomFilled.astro';
+import IconBookOpenTextFilled from '../icons/categories/IconBookOpenTextFilled.astro';
+import IconBooksFilled from '../icons/categories/IconBooksFilled.astro';
+import IconBuildingsFilled from '../icons/categories/IconBuildingsFilled.astro';
+import IconCameraFilled from '../icons/categories/IconCameraFilled.astro';
+import IconChartPieSliceFilled from '../icons/categories/IconChartPieSliceFilled.astro';
+import IconCloudSunFilled from '../icons/categories/IconCloudSunFilled.astro';
+import IconCompassFilled from '../icons/categories/IconCompassFilled.astro';
+import IconFilmStripFilled from '../icons/categories/IconFilmStripFilled.astro';
+import IconGameControllerFilled from '../icons/categories/IconGameControllerFilled.astro';
+import IconGearFineFilled from '../icons/categories/IconGearFineFilled.astro';
+import IconGlobeFilled from '../icons/categories/IconGlobeFilled.astro';
+import IconGraduationCapFilled from '../icons/categories/IconGraduationCapFilled.astro';
+import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
+import IconHeartbeatFilled from '../icons/categories/IconHeartbeatFilled.astro';
+import IconIslandFilled from '../icons/categories/IconIslandFilled.astro';
+import IconMaskHappyFilled from '../icons/categories/IconMaskHappyFilled.astro';
+import IconMusicNotesFilled from '../icons/categories/IconMusicNotesFilled.astro';
+import IconNewspaperFilled from '../icons/categories/IconNewspaperFilled.astro';
+import IconPinwheelFilled from '../icons/categories/IconPinwheelFilled.astro';
+import IconQuestionFilled from '../icons/categories/IconQuestionFilled.astro';
+import IconRadioFilled from '../icons/categories/IconRadioFilled.astro';
+import IconShoppingCartFilled from '../icons/categories/IconShoppingCartFilled.astro';
+import IconTennisBallFilled from '../icons/categories/IconTennisBallFilled.astro';
+import IconUserCircleFilled from '../icons/categories/IconUserCircleFilled.astro';
+import IconWineFilled from '../icons/categories/IconWineFilled.astro';
+
+// Category to Icon mapping - Regular variants
+const categoryIconMapRegular: Record<string, any> = {
+  'Books': IconBooksRegular,
+  'Books & Comics': IconBookOpenTextRegular,
+  'Business': IconBuildingsRegular,
+  'Education': IconGraduationCapRegular,
+  'Entertainment': IconFilmStripRegular,
+  'Food & Drink': IconWineRegular,
+  'Games': IconGameControllerRegular,
+  'Health & Fitness': IconHeartbeatRegular,
+  'Humor': IconMaskHappyRegular,
+  'Internet': IconGlobeRegular,
+  'Kids': IconPinwheelRegular,
+  'Lifestyle': IconIslandRegular,
+  'Maps & Navigation': IconCompassRegular,
+  'Music': IconMusicNotesRegular,
+  'News': IconNewspaperRegular,
+  'News & Weather': IconCloudSunRegular,
+  'Personalization': IconGearFineRegular,
+  'Photo & Video': IconCameraRegular,
+  'Productivity': IconChartPieSliceRegular,
+  'Reference': IconQuestionRegular,
+  'Science & Tech': IconAtomRegular,
+  'Shopping': IconShoppingCartRegular,
+  'Social': IconUserCircleRegular,
+  'Sports': IconTennisBallRegular,
+  'Travel': IconAirplaneTiltRegular,
+  'Utilities': IconHammerRegular,
+  'Weather': IconCloudSunRegular,
+  'Radio': IconRadioRegular,
+};
+
+// Category to Icon mapping - Filled variants
+const categoryIconMapFilled: Record<string, any> = {
+  'Books': IconBooksFilled,
+  'Books & Comics': IconBookOpenTextFilled,
+  'Business': IconBuildingsFilled,
+  'Education': IconGraduationCapFilled,
+  'Entertainment': IconFilmStripFilled,
+  'Food & Drink': IconWineFilled,
+  'Games': IconGameControllerFilled,
+  'Health & Fitness': IconHeartbeatFilled,
+  'Humor': IconMaskHappyFilled,
+  'Internet': IconGlobeFilled,
+  'Kids': IconPinwheelFilled,
+  'Lifestyle': IconIslandFilled,
+  'Maps & Navigation': IconCompassFilled,
+  'Music': IconMusicNotesFilled,
+  'News': IconNewspaperFilled,
+  'News & Weather': IconCloudSunFilled,
+  'Personalization': IconGearFineFilled,
+  'Photo & Video': IconCameraFilled,
+  'Productivity': IconChartPieSliceFilled,
+  'Reference': IconQuestionFilled,
+  'Science & Tech': IconAtomFilled,
+  'Shopping': IconShoppingCartFilled,
+  'Social': IconUserCircleFilled,
+  'Sports': IconTennisBallFilled,
+  'Travel': IconAirplaneTiltFilled,
+  'Utilities': IconHammerFilled,
+  'Weather': IconCloudSunFilled,
+  'Radio': IconRadioFilled,
+};
+
+// Select the correct icon based on variant and category
+const IconComponent = variant === 'label' 
+  ? (categoryIconMapFilled[category] || IconBooksFilled)
+  : (categoryIconMapRegular[category] || IconBooksRegular);
 ---
 
 <button 
@@ -64,18 +181,14 @@ const hasIcon = Astro.slots.has('icon');
   <div class="button-content">
     {variant === 'label' && (
       <>
-        <!-- Icon Slot (left) -->
-        {hasIcon ? (
-          <slot name="icon" />
-        ) : (
-          <div class="icon-wrapper icon-xs">
-            <IconBooksRegular size={14} />
-          </div>
-        )}
+        <!-- Icon (left) -->
+        <div class="icon-wrapper icon-xs">
+          <IconComponent size={14} />
+        </div>
         
         <!-- Label -->
         <span class="text-label">
-          {label}
+          {category}
         </span>
       </>
     )}
@@ -84,34 +197,26 @@ const hasIcon = Astro.slots.has('icon');
       <>
         <!-- Label -->
         <span class="text-label">
-          {label}
+          {category}
         </span>
         
-        <!-- Icon Slot (right) -->
-        {hasIcon ? (
-          <slot name="icon" />
-        ) : (
-          <div class="icon-wrapper icon-xs">
-            <IconBooksRegular size={14} />
-          </div>
-        )}
+        <!-- Icon (right) -->
+        <div class="icon-wrapper icon-xs">
+          <IconComponent size={14} />
+        </div>
       </>
     )}
     
     {variant === 'block' && (
       <>
-        <!-- Icon Slot (top) -->
-        {hasIcon ? (
-          <slot name="icon" />
-        ) : (
-          <div class="icon-wrapper icon-md">
-            <IconBooksRegular size={24} />
-          </div>
-        )}
+        <!-- Icon (top) -->
+        <div class="icon-wrapper icon-md">
+          <IconComponent size={24} />
+        </div>
         
         <!-- Label -->
         <span class="text-label">
-          {label}
+          {category}
         </span>
       </>
     )}
@@ -120,17 +225,13 @@ const hasIcon = Astro.slots.has('icon');
       <>
         <!-- Label -->
         <span class="text-label">
-          {label}
+          {category}
         </span>
         
-        <!-- Icon Slot (right) -->
-        {hasIcon ? (
-          <slot name="icon" />
-        ) : (
-          <div class="icon-wrapper icon-sm">
-            <IconBooksRegular size={16} />
-          </div>
-        )}
+        <!-- Icon (right) -->
+        <div class="icon-wrapper icon-sm">
+          <IconComponent size={16} />
+        </div>
       </>
     )}
   </div>
@@ -159,7 +260,7 @@ const hasIcon = Astro.slots.has('icon');
     position: relative;
     z-index: 1;
     display: flex;
-    color: var(--on-surface-light-faded);
+    color: var(--on-surface-light-regular);
   }
 
   /* Text labels - default typography */

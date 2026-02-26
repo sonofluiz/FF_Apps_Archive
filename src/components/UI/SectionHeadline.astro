@@ -1,0 +1,323 @@
+---
+/**
+ * SectionHeadline Component
+ * Section headline with H1 header, optional sub header, optional category icon, and color theme button
+ * 
+ * Variants:
+ * - 'default': H1 header on top row, sub header below, color theme button on right
+ * - 'inline': H1 header on left, sub header inline on right, color theme button on far right
+ * - 'icon': H1 header with category icon next to it, color theme button on far right
+ * - 'sub-only': Only sub header text with color theme button on right (no H1)
+ * 
+ * Props:
+ * @param variant - Layout variant (default: 'default')
+ * @param headerText - H1 header text (default: 'Header H1')
+ * @param subHeaderText - Sub header text (default: 'Sub Header')
+ * @param CategoryIcon - Optional category icon component (must be a Filled icon from icons/categories/)
+ * 
+ * Usage:
+ * <SectionHeadline variant="default" headerText="My Title" subHeaderText="My subtitle" />
+ * <SectionHeadline variant="icon" headerText="Games" CategoryIcon={IconGameControllerFilled} />
+ * <SectionHeadline variant="sub-only" subHeaderText="Just a subtitle" />
+ * 
+ * Design System Notes:
+ * - H1 text: 20px/24px Metropolis Bold, --on-surface-light-faded color
+ * - Sub header: varies by variant (14px or 16px Inter Regular)
+ * - Spacing: 16px top padding, 12px gaps
+ * - CategoryIcon: 16px square
+ */
+
+import ButtonColorTheme from './ButtonColorTheme.astro';
+
+export interface Props {
+  variant?: 'default' | 'inline' | 'icon' | 'sub-only';
+  headerText?: string;
+  subHeaderText?: string;
+  CategoryIcon?: any;
+}
+
+const { 
+  variant = 'default',
+  headerText = 'Header H1',
+  subHeaderText = 'Sub Header',
+  CategoryIcon
+} = Astro.props;
+---
+
+<div class="section-headline" data-variant={variant}>
+  {variant === 'default' && (
+    <!-- Default: H1 on top, sub header below -->
+    <div class="top-row">
+      <div class="h1-container">
+        <h1 class="h1-text">{headerText}</h1>
+      </div>
+      <div class="buttons-container">
+        <ButtonColorTheme variant="icon-only" state="auto" />
+      </div>
+    </div>
+    <div class="sub-header-row">
+      <p class="sub-header-text">{subHeaderText}</p>
+    </div>
+  )}
+
+  {variant === 'inline' && (
+    <!-- Inline: H1 left, sub header inline right, button far right -->
+    <div class="inline-row">
+      <div class="h1-container">
+        <h1 class="h1-text h1-text-inline">{headerText}</h1>
+      </div>
+      <div class="sub-header-inline">
+        <p class="sub-header-text-inline">{subHeaderText}</p>
+      </div>
+      <div class="buttons-container">
+        <ButtonColorTheme variant="icon-only" state="auto" />
+      </div>
+    </div>
+  )}
+
+  {variant === 'icon' && (
+    <!-- Icon: H1 with icon, button far right -->
+    <div class="icon-row">
+      <div class="h1-with-icon">
+        <h1 class="h1-text h1-text-inline">{headerText}</h1>
+        {CategoryIcon && (
+          <div class="category-icon">
+            <CategoryIcon />
+          </div>
+        )}
+      </div>
+      <div class="buttons-spacer"></div>
+      <div class="buttons-container">
+        <ButtonColorTheme variant="icon-only" state="auto" />
+      </div>
+    </div>
+  )}
+
+  {variant === 'sub-only' && (
+    <!-- Sub Only: Only sub header with button -->
+    <div class="sub-only-row">
+      <div class="sub-only-text-container">
+        <p class="sub-only-text">{subHeaderText}</p>
+      </div>
+      <div class="buttons-container-sub">
+        <ButtonColorTheme variant="icon-only" state="auto" />
+      </div>
+    </div>
+  )}
+</div>
+
+<style>
+  /* ========================================
+     BASE CONTAINER
+     ======================================== */
+  .section-headline {
+    width: 100%;
+    height: auto;
+    padding-top: var(--spacing-16);
+  }
+
+  /* Default variant */
+  .section-headline[data-variant="default"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Inline variant */
+  .section-headline[data-variant="inline"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Icon variant */
+  .section-headline[data-variant="icon"] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Sub Only variant */
+  .section-headline[data-variant="sub-only"] {
+    display: flex;
+    gap: var(--spacing-12);
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ========================================
+     DEFAULT VARIANT
+     ======================================== */
+  .top-row {
+    display: flex;
+    gap: var(--spacing-12);
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .h1-container {
+    display: flex;
+    flex: 1 0 0;
+    align-items: center;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  .h1-text {
+    flex: 1 0 0;
+    min-width: 0;
+    min-height: 1px;
+    font-family: var(--font-metropolis);
+    font-weight: var(--font-weight-bold);
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: normal;
+    color: var(--on-surface-light-faded);
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+  }
+
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-left: var(--spacing-24);
+  }
+
+  .sub-header-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sub-header-text {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: normal;
+    color: var(--on-surface-light-faded);
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+  }
+
+  /* ========================================
+     INLINE VARIANT
+     ======================================== */
+  .inline-row {
+    display: flex;
+    flex: 1 0 0;
+    gap: var(--spacing-12);
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  .h1-text-inline {
+    flex: initial;
+    white-space: nowrap;
+  }
+
+  .sub-header-inline {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 24px;
+    width: auto;
+    text-align: right;
+  }
+
+  .sub-header-text-inline {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: normal;
+    color: var(--on-surface-light-faded);
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+  }
+
+  /* ========================================
+     ICON VARIANT
+     ======================================== */
+  .icon-row {
+    display: flex;
+    flex: 1 0 0;
+    gap: var(--spacing-12);
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  .h1-with-icon {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+  }
+
+  .category-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    flex-shrink: 0;
+    color: var(--on-surface-light-faded);
+  }
+
+  .category-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .buttons-spacer {
+    flex: 1 0 0;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  /* ========================================
+     SUB ONLY VARIANT
+     ======================================== */
+  .sub-only-row {
+    display: flex;
+    flex: 1 0 0;
+    gap: var(--spacing-12);
+    align-items: center;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  .sub-only-text-container {
+    display: flex;
+    flex: 1 0 0;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    min-height: 1px;
+  }
+
+  .sub-only-text {
+    font-family: var(--font-inter);
+    font-weight: var(--font-weight-regular);
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: normal;
+    color: var(--on-surface-light-faded);
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+  }
+
+  .buttons-container-sub {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: flex-end;
+    padding-left: var(--spacing-24);
+  }
+</style>
