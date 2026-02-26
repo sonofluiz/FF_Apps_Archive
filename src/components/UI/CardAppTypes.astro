@@ -1,7 +1,7 @@
 ---
 /**
  * App Types Card Component
- * Card for app type display and selection
+ * Card for app type display and selection with predefined configurations
  * 
  * States:
  * - Default: Gradient background, colored border (1px)
@@ -9,51 +9,86 @@
  * - Focus: Gradient background, faded border (2px) (keyboard navigation)
  * 
  * Props:
- * @param title - Card title (heading)
- * @param description - Card description text
- * @param iconColor - CSS variable for icon/text/border color (default: --on-surface-any-blue)
- *                    Available options: --on-surface-any-blue | --on-surface-any-yellow | 
- *                    --on-surface-any-purple | --on-surface-any-orange | --on-surface-any-red
- * @param gradientStart - CSS variable for gradient start (default: --card-gradient-light-blue-start)
- * @param gradientEnd - CSS variable for gradient end (default: --card-gradient-light-blue-end)
- *                      Gradient pairs: blue-start/blue-end | yellow-start/yellow-end | 
- *                      purple-start/purple-end | orange-start/orange-end | red-start/red-end
+ * @param appType - The type of app card to display (default: 'All')
+ *                  Options: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead'
  * @param onclick - Optional click handler
  * 
- * Usage with custom icon and colors:
- * <CardAppTypes 
- *   title="Extension" 
- *   description="Browser extensions"
- *   iconColor="--on-surface-any-purple"
- *   gradientStart="--card-gradient-light-purple-start"
- *   gradientEnd="--card-gradient-light-purple-end"
- * >
- *   <IconPackage slot="icon" />
- * </CardAppTypes>
+ * Each appType includes predefined:
+ * - Title text
+ * - Description text
+ * - Icon component
+ * - Color scheme (icon/text/border)
+ * - Gradient background
+ * 
+ * Usage:
+ * <CardAppTypes appType="Packaged" onclick="handleClick()" />
+ * <CardAppTypes appType="Privileged" />
+ * <CardAppTypes /> <!-- defaults to "All" -->
  */
 
 interface Props {
-  title?: string;
-  description?: string;
-  iconColor?: string;
-  gradientStart?: string;
-  gradientEnd?: string;
+  appType?: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead';
   onclick?: string;
 }
 
 const { 
-  title = 'Type',
-  description = 'Description',
-  iconColor = '--on-surface-any-blue',
-  gradientStart = '--card-gradient-light-blue-start',
-  gradientEnd = '--card-gradient-light-blue-end',
+  appType = 'All',
   onclick
 } = Astro.props;
 
-// Import default icon from app-types icons
+// Import all app type icons
 import IconShapes from '../icons/app-types/IconShapes.astro';
+import IconPackage from '../icons/app-types/IconPackage.astro';
+import IconDownload from '../icons/app-types/IconDownload.astro';
+import IconCloud from '../icons/app-types/IconCloud.astro';
+import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
 
-const hasIcon = Astro.slots.has('icon');
+// Type configurations
+const typeConfigs = {
+  All: {
+    title: 'All Apps',
+    description: 'All of the apps that the archive contains',
+    icon: IconShapes,
+    iconColor: '--on-surface-any-blue',
+    gradientStart: '--card-gradient-light-blue-start',
+    gradientEnd: '--card-gradient-light-blue-end'
+  },
+  Packaged: {
+    title: 'Packaged Apps',
+    description: 'Packaged apps can be installed from this archive',
+    icon: IconPackage,
+    iconColor: '--on-surface-any-yellow',
+    gradientStart: '--card-gradient-light-yellow-start',
+    gradientEnd: '--card-gradient-light-yellow-end'
+  },
+  Privileged: {
+    title: 'Privileged Apps',
+    description: 'Privileged apps cannot be installed directly and must be sideloaded using developer tools.',
+    icon: IconDownload,
+    iconColor: '--on-surface-any-purple',
+    gradientStart: '--card-gradient-light-purple-start',
+    gradientEnd: '--card-gradient-light-purple-end'
+  },
+  Live: {
+    title: 'Hosted Apps',
+    description: 'Hosted apps are retrieved offsite and some of them can be installed from this archive.',
+    icon: IconCloud,
+    iconColor: '--on-surface-any-orange',
+    gradientStart: '--card-gradient-light-orange-start',
+    gradientEnd: '--card-gradient-light-orange-end'
+  },
+  Dead: {
+    title: 'Dead Hosted Apps',
+    description: 'Dead hosted apps cannot be installed from this archive.',
+    icon: IconSmileyXEyes,
+    iconColor: '--on-surface-any-red',
+    gradientStart: '--card-gradient-light-red-start',
+    gradientEnd: '--card-gradient-light-red-end'
+  }
+};
+
+const config = typeConfigs[appType];
+const IconComponent = config.icon;
 ---
 
 <button 
@@ -61,8 +96,8 @@ const hasIcon = Astro.slots.has('icon');
   class="app-types-card"
   data-app-types-card
   style={`
-    background: linear-gradient(180deg, var(${gradientStart}) 0%, var(${gradientEnd}) 100%);
-    --card-icon-color: var(${iconColor});
+    background: linear-gradient(180deg, var(${config.gradientStart}) 0%, var(${config.gradientEnd}) 100%);
+    --card-icon-color: var(${config.iconColor});
   `}
 >
   <!-- Content -->
@@ -70,22 +105,18 @@ const hasIcon = Astro.slots.has('icon');
     <!-- Header -->
     <div class="card-header">
       <h3 class="card-title">
-        {title}
+        {config.title}
       </h3>
       
-      <!-- Icon Slot -->
-      {hasIcon ? (
-        <slot name="icon" />
-      ) : (
-        <div class="icon-wrapper icon-md">
-          <IconShapes />
-        </div>
-      )}
+      <!-- Icon -->
+      <div class="icon-wrapper icon-md">
+        <IconComponent />
+      </div>
     </div>
     
     <!-- Description -->
     <p class="body-sm card-description">
-      {description}
+      {config.description}
     </p>
   </div>
   

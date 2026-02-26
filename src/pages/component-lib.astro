@@ -4,8 +4,9 @@
  * Comprehensive demonstration of all design system components
  */
 
+/** Layout Import */
 import Layout from '../layouts/base.astro';
-
+/** UI Component Imports */
 import RadioButton from '../components/UI/RadioButton.astro';
 import Button from '../components/UI/Button.astro';
 import ButtonCta from '../components/UI/ButtonCta.astro';
@@ -53,20 +54,9 @@ import ButtonBack from '../components/UI/ButtonBack.astro';
 import SectionHeadline from '../components/UI/SectionHeadline.astro';
 import HeadlineAppType from '../components/UI/HeadlineAppType.astro';
 import Footer from '../components/UI/Footer.astro';
-
-import IconBooksRegular from '../components/icons/categories/IconBooksRegular.astro';
-import IconBooksFilled from '../components/icons/categories/IconBooksFilled.astro';
-import IconCameraRegular from '../components/icons/categories/IconCameraRegular.astro';
-import IconCameraFilled from '../components/icons/categories/IconCameraFilled.astro';
-import IconMusicNotesRegular from '../components/icons/categories/IconMusicNotesRegular.astro';
-import IconMusicNotesFilled from '../components/icons/categories/IconMusicNotesFilled.astro';
-import IconGameControllerRegular from '../components/icons/categories/IconGameControllerRegular.astro';
-import IconGameControllerFilled from '../components/icons/categories/IconGameControllerFilled.astro';
-import IconShapes from '../components/icons/app-types/IconShapes.astro';
-import IconPackage from '../components/icons/app-types/IconPackage.astro';
+/** Icon Component Imports */
 import IconCloud from '../components/icons/app-types/IconCloud.astro';
 import IconDownload from '../components/icons/app-types/IconDownload.astro';
-import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro';
 ---
 
 <Layout title="Component Library - Design System">
@@ -1604,12 +1594,6 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
               <div class="button-group">
                 <div style="display: flex; flex-direction: column; gap: var(--spacing-12);">
                   <div style="display: flex; gap: var(--spacing-12); align-items: center;">
-                    <TagAppStatus text="w">
-                      <IconShapes slot="icon" />
-                    </TagAppStatus>
-                    <span class="body-sm text-faded">IconShapes</span>
-                  </div>
-                  <div style="display: flex; gap: var(--spacing-12); align-items: center;">
                     <TagAppStatus text="Privileged">
                       <IconDownload slot="icon" />
                     </TagAppStatus>
@@ -1918,35 +1902,32 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
             <!-- All Variants Examples -->
             <section class="section">
               <h2 class="heading-xs">All Variants</h2>
-              <p class="body-sm text-faded">Two app types button styles for different use cases</p>
+              <p class="body-sm text-faded">Two app types button styles with predefined configurations</p>
               
               <div class="button-group" style="gap: var(--spacing-16); align-items: flex-start; flex-direction: column;">
                 <div style="display: flex; gap: var(--spacing-12); align-items: center;">
-                  <ButtonAppTypes variant="label" label="Extension" iconBgColor="--app-icon-bg-light-blue">
-                    <IconPackage slot="icon" size={16} />
-                  </ButtonAppTypes>
-                  <span class="body-sm text-faded">Label Variant (Blue)</span>
+                  <ButtonAppTypes appType="All" variant="label" />
+                  <span class="body-sm text-faded">Label Variant - All (Blue)</span>
                 </div>
                 
                 <div style="display: flex; gap: var(--spacing-12); align-items: center;">
-                  <ButtonAppTypes variant="inline" label="Hosted" iconBgColor="--app-icon-bg-light-purple">
-                    <IconCloud slot="icon" size={16} />
-                  </ButtonAppTypes>
-                  <span class="body-sm text-faded">Inline Variant (Purple)</span>
+                  <ButtonAppTypes appType="Packaged" variant="label" />
+                  <span class="body-sm text-faded">Label Variant - Packaged (Yellow)</span>
                 </div>
                 
                 <div style="display: flex; gap: var(--spacing-12); align-items: center;">
-                  <ButtonAppTypes variant="label" label="Download" iconBgColor="--app-icon-bg-light-yellow">
-                    <IconDownload slot="icon" size={16} />
-                  </ButtonAppTypes>
-                  <span class="body-sm text-faded">Label Variant (Yellow)</span>
+                  <ButtonAppTypes appType="Privileged" variant="inline" />
+                  <span class="body-sm text-faded">Inline Variant - Privileged (Purple)</span>
                 </div>
                 
                 <div style="display: flex; gap: var(--spacing-12); align-items: center;">
-                  <ButtonAppTypes variant="inline" label="Offline" iconBgColor="--app-icon-bg-light-orange">
-                    <IconSmileyXEyes slot="icon" size={16} />
-                  </ButtonAppTypes>
-                  <span class="body-sm text-faded">Inline Variant (Orange)</span>
+                  <ButtonAppTypes appType="Live" variant="inline" />
+                  <span class="body-sm text-faded">Inline Variant - Hosted (Orange)</span>
+                </div>
+                
+                <div style="display: flex; gap: var(--spacing-12); align-items: center;">
+                  <ButtonAppTypes appType="Dead" variant="label" />
+                  <span class="body-sm text-faded">Label Variant - Dead Hosted (Red)</span>
                 </div>
               </div>
             </section>
@@ -1961,9 +1942,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                 <div class="state-demo">
                   <p class="body-xs text-faded">Default</p>
                   <div class="state-box">
-                    <ButtonAppTypes variant="label" label="App Type">
-                      <IconShapes slot="icon" size={16} />
-                    </ButtonAppTypes>
+                    <ButtonAppTypes appType="All" variant="label" />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     Transparent background, regular text and icon color
@@ -1974,9 +1953,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                 <div class="state-demo">
                   <p class="body-xs text-faded">Hover</p>
                   <div class="state-box state-hover">
-                    <ButtonAppTypes variant="label" label="App Type">
-                      <IconShapes slot="icon" size={16} />
-                    </ButtonAppTypes>
+                    <ButtonAppTypes appType="All" variant="label" />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     White background with purple bottom border (2px)
@@ -1988,9 +1965,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                   <p class="body-xs text-faded">Focus</p>
                   <div class="state-box">
                     <p class="body-xxs text-faded hint">Tab</p>
-                    <ButtonAppTypes variant="label" label="App Type">
-                      <IconShapes slot="icon" size={16} />
-                    </ButtonAppTypes>
+                    <ButtonAppTypes appType="All" variant="label" />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     4px faded border with outline (keyboard navigation)
@@ -2001,9 +1976,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                 <div class="state-demo">
                   <p class="body-xs text-faded">Active</p>
                   <div class="state-box">
-                    <ButtonAppTypes variant="label" label="App Type" active={true}>
-                      <IconShapes slot="icon" size={16} />
-                    </ButtonAppTypes>
+                    <ButtonAppTypes appType="All" variant="label" active={true} />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     Gray background (#e8e8e8), rounded corners
@@ -2022,9 +1995,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                 <div class="state-demo">
                   <p class="body-xs text-faded">Default</p>
                   <div class="state-box">
-                    <ButtonAppTypes variant="inline" label="App Type">
-                      <IconShapes slot="icon" size={16} />
-                    </ButtonAppTypes>
+                    <ButtonAppTypes appType="All" variant="inline" />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     Transparent with subtle bottom border (0.5px)
@@ -2036,9 +2007,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                   <p class="body-xs text-faded">Focus</p>
                   <div class="state-box">
                     <p class="body-xxs text-faded hint">Tab</p>
-                    <ButtonAppTypes variant="inline" label="App Type">
-                      <IconShapes slot="icon" size={16} />
-                    </ButtonAppTypes>
+                    <ButtonAppTypes appType="All" variant="inline" />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     4px faded border with outline (keyboard navigation)
@@ -2049,9 +2018,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                 <div class="state-demo">
                   <p class="body-xs text-faded">Active</p>
                   <div class="state-box">
-                    <ButtonAppTypes variant="inline" label="App Type" active={true}>
-                      <IconShapes slot="icon" size={16} />
-                    </ButtonAppTypes>
+                    <ButtonAppTypes appType="All" variant="inline" active={true} />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     Gray background (#e8e8e8), no border, rounded corners
@@ -2210,60 +2177,17 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
             <!-- Card Examples -->
             <section class="section">
               <h2 class="heading-xs">Card Examples</h2>
-              <p class="body-sm text-faded">App type cards with different colors and icons</p>
+              <p class="body-sm text-faded">App type cards with predefined configurations using appType prop</p>
               
               <div class="button-group" style="gap: var(--spacing-16); align-items: flex-start;">
-                <CardAppTypes 
-                  title="Extension" 
-                  description="Browser extensions and add-ons"
-                  iconColor="--on-surface-any-blue"
-                  gradientStart="--card-gradient-light-blue-start"
-                  gradientEnd="--card-gradient-light-blue-end"
-                >
-                  <IconPackage slot="icon" />
-                </CardAppTypes>
-                
-                <CardAppTypes 
-                  title="Hosted" 
-                  description="Cloud-hosted web applications"
-                  iconColor="--on-surface-any-purple"
-                  gradientStart="--card-gradient-light-purple-start"
-                  gradientEnd="--card-gradient-light-purple-end"
-                >
-                  <IconCloud slot="icon" />
-                </CardAppTypes>
-                
-                <CardAppTypes 
-                  title="Download" 
-                  description="Downloadable desktop apps"
-                  iconColor="--on-surface-any-yellow"
-                  gradientStart="--card-gradient-light-yellow-start"
-                  gradientEnd="--card-gradient-light-yellow-end"
-                >
-                  <IconDownload slot="icon" />
-                </CardAppTypes>
+                <CardAppTypes appType="All" />
+                <CardAppTypes appType="Packaged" />
+                <CardAppTypes appType="Privileged" />
               </div>
               
               <div class="button-group" style="gap: var(--spacing-16); align-items: flex-start; margin-top: var(--spacing-16);">
-                <CardAppTypes 
-                  title="Offline" 
-                  description="Works without internet"
-                  iconColor="--on-surface-any-orange"
-                  gradientStart="--card-gradient-light-orange-start"
-                  gradientEnd="--card-gradient-light-orange-end"
-                >
-                  <IconSmileyXEyes slot="icon" />
-                </CardAppTypes>
-                
-                <CardAppTypes 
-                  title="Premium" 
-                  description="Exclusive premium features"
-                  iconColor="--on-surface-any-red"
-                  gradientStart="--card-gradient-light-red-start"
-                  gradientEnd="--card-gradient-light-red-end"
-                >
-                  <IconShapes slot="icon" />
-                </CardAppTypes>
+                <CardAppTypes appType="Live" />
+                <CardAppTypes appType="Dead" />
               </div>
             </section>
 
@@ -2277,9 +2201,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                 <div class="state-demo">
                   <p class="body-xs text-faded">Default</p>
                   <div class="state-box">
-                    <CardAppTypes title="Type" description="Description">
-                      <IconShapes slot="icon" />
-                    </CardAppTypes>
+                    <CardAppTypes appType="All" />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     Blue gradient background, 1px blue border with shadow
@@ -2290,9 +2212,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                 <div class="state-demo">
                   <p class="body-xs text-faded">Hover</p>
                   <div class="state-box state-hover">
-                    <CardAppTypes title="Type" description="Description">
-                      <IconShapes slot="icon" />
-                    </CardAppTypes>
+                    <CardAppTypes appType="All" />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     Same gradient, 2px blue border with shadow
@@ -2304,9 +2224,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                   <p class="body-xs text-faded">Focus</p>
                   <div class="state-box">
                     <p class="body-xxs text-faded hint">Tab</p>
-                    <CardAppTypes title="Type" description="Description">
-                      <IconShapes slot="icon" />
-                    </CardAppTypes>
+                    <CardAppTypes appType="All" />
                   </div>
                   <p class="body-xxs text-faded state-description">
                     Same gradient, 2px faded border with outline (keyboard)
@@ -4823,26 +4741,26 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
             <!-- Icon Variant -->
             <section class="section">
               <h2 class="heading-xs">Icon Variant</h2>
-              <p class="body-sm text-faded">H1 header with category icon next to it, color theme button on far right</p>
+              <p class="body-sm text-faded">H1 header with category icon next to it (automatically mapped from category name)</p>
               <div style="display: flex; flex-direction: column; gap: var(--spacing-16);">
                 <div>
                   <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">With Game Controller Icon</p>
                   <div class="demo-box" style="height: auto; width: 100%; padding: var(--spacing-24);">
-                    <SectionHeadline variant="icon" headerText="Header H1" CategoryIcon={IconGameControllerFilled} />
+                    <SectionHeadline variant="icon" headerText="Games" category="Games" />
                   </div>
                 </div>
                 
                 <div>
                   <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">With Books Icon</p>
                   <div class="demo-box" style="height: auto; width: 100%; padding: var(--spacing-24);">
-                    <SectionHeadline variant="icon" headerText="Header H1" CategoryIcon={IconBooksFilled} />
+                    <SectionHeadline variant="icon" headerText="Books" category="Books" />
                   </div>
                 </div>
                 
                 <div>
                   <p class="body-xs text-faded" style="margin-bottom: var(--spacing-8);">With Music Notes Icon</p>
                   <div class="demo-box" style="height: auto; width: 100%; padding: var(--spacing-24);">
-                    <SectionHeadline variant="icon" headerText="Header H1" CategoryIcon={IconMusicNotesFilled} />
+                    <SectionHeadline variant="icon" headerText="Music" category="Music" />
                   </div>
                 </div>
               </div>
@@ -4874,8 +4792,8 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
                   <span class="body-xs text-faded">Sub header text (default: 'Sub Header')</span>
                 </div>
                 <div class="token-item">
-                  <code>CategoryIcon?: Component</code>
-                  <span class="body-xs text-faded">Optional category icon component (must be a Filled icon from icons/categories/)</span>
+                  <code>category?: string</code>
+                  <span class="body-xs text-faded">Optional category name (automatically maps to filled icon for 'icon' variant)</span>
                 </div>
               </div>
             </section>
@@ -5818,7 +5736,7 @@ import IconSmileyXEyes from '../components/icons/app-types/IconSmileyXEyes.astro
               <h2 class="heading-xs">Navigation Sidebar</h2>
               <p class="body-sm text-faded">Complete sidebar navigation with App Types and Categories sections</p>
               
-              <div>
+              <div style="max-width: 210px;">
                 <MenuNavSidebar />
               </div>
             </section>

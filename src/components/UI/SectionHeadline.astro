@@ -13,35 +13,99 @@
  * @param variant - Layout variant (default: 'default')
  * @param headerText - H1 header text (default: 'Header H1')
  * @param subHeaderText - Sub header text (default: 'Sub Header')
- * @param CategoryIcon - Optional category icon component (must be a Filled icon from icons/categories/)
+ * @param category - Optional category name (automatically maps to filled icon for 'icon' variant)
  * 
  * Usage:
  * <SectionHeadline variant="default" headerText="My Title" subHeaderText="My subtitle" />
- * <SectionHeadline variant="icon" headerText="Games" CategoryIcon={IconGameControllerFilled} />
+ * <SectionHeadline variant="icon" headerText="Games" category="Games" />
  * <SectionHeadline variant="sub-only" subHeaderText="Just a subtitle" />
  * 
  * Design System Notes:
  * - H1 text: 20px/24px Metropolis Bold, --on-surface-light-faded color
  * - Sub header: varies by variant (14px or 16px Inter Regular)
  * - Spacing: 16px top padding, 12px gaps
- * - CategoryIcon: 16px square
+ * - Category icon: 16px square, automatically selected from filled variants
  */
 
 import ButtonColorTheme from './ButtonColorTheme.astro';
+
+// Import ALL filled category icons for icon variant
+import IconAirplaneTiltFilled from '../icons/categories/IconAirplaneTiltFilled.astro';
+import IconAtomFilled from '../icons/categories/IconAtomFilled.astro';
+import IconBookOpenTextFilled from '../icons/categories/IconBookOpenTextFilled.astro';
+import IconBooksFilled from '../icons/categories/IconBooksFilled.astro';
+import IconBuildingsFilled from '../icons/categories/IconBuildingsFilled.astro';
+import IconCameraFilled from '../icons/categories/IconCameraFilled.astro';
+import IconChartPieSliceFilled from '../icons/categories/IconChartPieSliceFilled.astro';
+import IconCloudSunFilled from '../icons/categories/IconCloudSunFilled.astro';
+import IconCompassFilled from '../icons/categories/IconCompassFilled.astro';
+import IconFilmStripFilled from '../icons/categories/IconFilmStripFilled.astro';
+import IconGameControllerFilled from '../icons/categories/IconGameControllerFilled.astro';
+import IconGearFineFilled from '../icons/categories/IconGearFineFilled.astro';
+import IconGlobeFilled from '../icons/categories/IconGlobeFilled.astro';
+import IconGraduationCapFilled from '../icons/categories/IconGraduationCapFilled.astro';
+import IconHammerFilled from '../icons/categories/IconHammerFilled.astro';
+import IconHeartbeatFilled from '../icons/categories/IconHeartbeatFilled.astro';
+import IconIslandFilled from '../icons/categories/IconIslandFilled.astro';
+import IconMaskHappyFilled from '../icons/categories/IconMaskHappyFilled.astro';
+import IconMusicNotesFilled from '../icons/categories/IconMusicNotesFilled.astro';
+import IconNewspaperFilled from '../icons/categories/IconNewspaperFilled.astro';
+import IconPinwheelFilled from '../icons/categories/IconPinwheelFilled.astro';
+import IconQuestionFilled from '../icons/categories/IconQuestionFilled.astro';
+import IconRadioFilled from '../icons/categories/IconRadioFilled.astro';
+import IconShoppingCartFilled from '../icons/categories/IconShoppingCartFilled.astro';
+import IconTennisBallFilled from '../icons/categories/IconTennisBallFilled.astro';
+import IconUserCircleFilled from '../icons/categories/IconUserCircleFilled.astro';
+import IconWineFilled from '../icons/categories/IconWineFilled.astro';
+
+// Category to Filled Icon mapping
+const categoryIconMap: Record<string, any> = {
+  'Books': IconBooksFilled,
+  'Books & Comics': IconBookOpenTextFilled,
+  'Business': IconBuildingsFilled,
+  'Education': IconGraduationCapFilled,
+  'Entertainment': IconFilmStripFilled,
+  'Food & Drink': IconWineFilled,
+  'Games': IconGameControllerFilled,
+  'Health & Fitness': IconHeartbeatFilled,
+  'Humor': IconMaskHappyFilled,
+  'Internet': IconGlobeFilled,
+  'Kids': IconPinwheelFilled,
+  'Lifestyle': IconIslandFilled,
+  'Maps & Navigation': IconCompassFilled,
+  'Music': IconMusicNotesFilled,
+  'News': IconNewspaperFilled,
+  'News & Weather': IconCloudSunFilled,
+  'Personalization': IconGearFineFilled,
+  'Photo & Video': IconCameraFilled,
+  'Productivity': IconChartPieSliceFilled,
+  'Reference': IconQuestionFilled,
+  'Science & Tech': IconAtomFilled,
+  'Shopping': IconShoppingCartFilled,
+  'Social': IconUserCircleFilled,
+  'Sports': IconTennisBallFilled,
+  'Travel': IconAirplaneTiltFilled,
+  'Utilities': IconHammerFilled,
+  'Weather': IconCloudSunFilled,
+  'Radio': IconRadioFilled,
+};
 
 export interface Props {
   variant?: 'default' | 'inline' | 'icon' | 'sub-only';
   headerText?: string;
   subHeaderText?: string;
-  CategoryIcon?: any;
+  category?: string;
 }
 
 const { 
   variant = 'default',
   headerText = 'Header H1',
   subHeaderText = 'Sub Header',
-  CategoryIcon
+  category
 } = Astro.props;
+
+// Get the icon component for the category (only used in 'icon' variant)
+const CategoryIcon = category ? categoryIconMap[category] : null;
 ---
 
 <div class="section-headline" data-variant={variant}>

@@ -9,7 +9,7 @@
  * - App Types section with 5 options (All, Packaged, Privileged, Hosted, Dead Hosted)
  * - Categories section with full category list (27 categories)
  * - Uses H2 headings for section titles
- * - Uses ButtonAppTypes (label variant) for app types
+ * - Uses ButtonAppTypes (label variant) with simplified appType API
  * - Uses ButtonCategory (label variant) for categories with automatic icon selection
  * - Width: 260px (matches design spec)
  * 
@@ -24,13 +24,6 @@
 import H2 from './H2.astro';
 import ButtonAppTypes from './ButtonAppTypes.astro';
 import ButtonCategory from './ButtonCategory.astro';
-
-// Import App Types icons
-import IconShapes from '../icons/app-types/IconShapes.astro';
-import IconPackage from '../icons/app-types/IconPackage.astro';
-import IconDownload from '../icons/app-types/IconDownload.astro';
-import IconCloud from '../icons/app-types/IconCloud.astro';
-import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
 ---
 
 <nav class="menu-nav-sidebar" aria-label="Main navigation">
@@ -41,50 +34,11 @@ import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
     </div>
     
     <div class="button-list">
-      <ButtonAppTypes 
-        variant="label" 
-        label="All"
-        iconBgColor="--app-icon-bg-light-blue"
-        active={false}
-      >
-        <IconShapes slot="icon" size={16} />
-      </ButtonAppTypes>
-      
-      <ButtonAppTypes 
-        variant="label" 
-        label="Packaged"
-        iconBgColor="--app-icon-bg-light-yellow"
-        active={false}
-      >
-        <IconPackage slot="icon" size={16} />
-      </ButtonAppTypes>
-      
-      <ButtonAppTypes 
-        variant="label" 
-        label="Privileged"
-        iconBgColor="--app-icon-bg-light-purple"
-        active={false}
-      >
-        <IconDownload slot="icon" size={16} />
-      </ButtonAppTypes>
-      
-      <ButtonAppTypes 
-        variant="label" 
-        label="Hosted"
-        iconBgColor="--app-icon-bg-light-orange"
-        active={false}
-      >
-        <IconCloud slot="icon" size={16} />
-      </ButtonAppTypes>
-      
-      <ButtonAppTypes 
-        variant="label" 
-        label="Dead Hosted"
-        iconBgColor="--app-icon-bg-light-red"
-        active={false}
-      >
-        <IconSmileyXEyes slot="icon" size={16} />
-      </ButtonAppTypes>
+      <ButtonAppTypes appType="All" variant="label" active={false} />
+      <ButtonAppTypes appType="Packaged" variant="label" active={false} />
+      <ButtonAppTypes appType="Privileged" variant="label" active={false} />
+      <ButtonAppTypes appType="Live" variant="label" active={false} />
+      <ButtonAppTypes appType="Dead" variant="label" active={false} />
     </div>
   </div>
 
