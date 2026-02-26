@@ -1,7 +1,7 @@
 ---
 /**
  * App Types Button Component
- * Button for app type selection with 2 variants
+ * Button for app type selection with 2 variants and predefined configurations
  * 
  * Variants:
  * - label: Horizontal layout (icon + text), minimal width 160px
@@ -14,42 +14,75 @@
  * - Active: Gray background
  * 
  * Props:
+ * @param appType - The type of app button to display (default: 'All')
+ *                  Options: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead'
  * @param variant - Button variant: 'label' | 'inline'
- * @param label - Button text
  * @param active - Active state (both variants)
- * @param iconBgColor - CSS variable for icon background color (default: --app-icon-bg-light-blue)
- *                      Available options: --app-icon-bg-light-blue | --app-icon-bg-light-yellow | 
- *                      --app-icon-bg-light-purple | --app-icon-bg-light-orange | --app-icon-bg-light-red |
- *                      --app-icon-bg-dark-blue | --app-icon-bg-dark-yellow | --app-icon-bg-dark-purple |
- *                      --app-icon-bg-dark-orange | --app-icon-bg-dark-red
  * @param onclick - Optional click handler
  * 
- * Usage with custom icon:
- * <ButtonAppTypes variant="label" label="Extension" iconBgColor="--app-icon-bg-light-blue">
- *   <IconPackage slot="icon" size={16} />
- * </ButtonAppTypes>
+ * Each appType includes predefined:
+ * - Label text
+ * - Icon component
+ * - Icon background color
+ * 
+ * Usage:
+ * <ButtonAppTypes appType="Packaged" variant="label" />
+ * <ButtonAppTypes appType="Live" variant="inline" active={true} />
+ * <ButtonAppTypes appType="All" /> <!-- defaults to variant="label" -->
  */
 
 interface Props {
+  appType?: 'All' | 'Packaged' | 'Privileged' | 'Live' | 'Dead';
   variant?: 'label' | 'inline';
-  label?: string;
   active?: boolean;
-  iconBgColor?: string;
   onclick?: string;
 }
 
 const { 
+  appType = 'All',
   variant = 'label',
-  label = 'App Type',
   active = false,
-  iconBgColor = '--app-icon-bg-light-blue',
   onclick
 } = Astro.props;
 
-// Import default icon from app-types icons
+// Import all app type icons
 import IconShapes from '../icons/app-types/IconShapes.astro';
+import IconPackage from '../icons/app-types/IconPackage.astro';
+import IconDownload from '../icons/app-types/IconDownload.astro';
+import IconCloud from '../icons/app-types/IconCloud.astro';
+import IconSmileyXEyes from '../icons/app-types/IconSmileyXEyes.astro';
 
-const hasIcon = Astro.slots.has('icon');
+// Type configurations
+const typeConfigs = {
+  All: {
+    label: 'All',
+    icon: IconShapes,
+    iconBgColor: '--app-icon-bg-light-blue'
+  },
+  Packaged: {
+    label: 'Packaged',
+    icon: IconPackage,
+    iconBgColor: '--app-icon-bg-light-yellow'
+  },
+  Privileged: {
+    label: 'Privileged',
+    icon: IconDownload,
+    iconBgColor: '--app-icon-bg-light-purple'
+  },
+  Live: {
+    label: 'Hosted',
+    icon: IconCloud,
+    iconBgColor: '--app-icon-bg-light-orange'
+  },
+  Dead: {
+    label: 'Dead Hosted',
+    icon: IconSmileyXEyes,
+    iconBgColor: '--app-icon-bg-light-red'
+  }
+};
+
+const config = typeConfigs[appType];
+const IconComponent = config.icon;
 ---
 
 <button 
@@ -63,20 +96,16 @@ const hasIcon = Astro.slots.has('icon');
   <div class="button-content">
     {variant === 'label' && (
       <>
-        <!-- Icon Slot (left) -->
-        <div class="icon-bg" style={`background-color: var(${iconBgColor});`}>
-          {hasIcon ? (
-            <slot name="icon" />
-          ) : (
-            <div class="icon-wrapper icon-sm">
-              <IconShapes size={16} />
-            </div>
-          )}
+        <!-- Icon (left) -->
+        <div class="icon-bg" style={`background-color: var(${config.iconBgColor});`}>
+          <div class="icon-wrapper icon-sm">
+            <IconComponent size={16} />
+          </div>
         </div>
         
         <!-- Label -->
         <span class="text-label">
-          {label}
+          {config.label}
         </span>
       </>
     )}
@@ -85,18 +114,14 @@ const hasIcon = Astro.slots.has('icon');
       <>
         <!-- Label -->
         <span class="text-label">
-          {label}
+          {config.label}
         </span>
         
-        <!-- Icon Slot (right) -->
-        <div class="icon-bg" style={`background-color: var(${iconBgColor});`}>
-          {hasIcon ? (
-            <slot name="icon" />
-          ) : (
-            <div class="icon-wrapper icon-sm">
-              <IconShapes size={16} />
-            </div>
-          )}
+        <!-- Icon (right) -->
+        <div class="icon-bg" style={`background-color: var(${config.iconBgColor});`}>
+          <div class="icon-wrapper icon-sm">
+            <IconComponent size={16} />
+          </div>
         </div>
       </>
     )}

@@ -1,0 +1,328 @@
+---
+/**
+ * Header Component
+ * Main navigation header with four responsive variants
+ * 
+ * Variants:
+ * - 'mobile': Mobile header with brand, search button, menu button, and close button
+ * - 'mobile-search': Mobile search mode with back button and full-width search bar
+ * - 'desktop': Desktop header with brand and search bar (centered, max-width 968px)
+ * - 'desktop-home': Desktop home header with brand and full-width search bar (max-width 1260px)
+ * 
+ * Props:
+ * @param variant - Header layout variant (default: 'mobile')
+ * @param homeUrl - URL for brand link (default: '/')
+ * @param searchDisabled - Whether search bar is disabled (default: false)
+ * @param searchButtonDisabled - Whether search button is disabled in mobile variant (default: false)
+ * @param showCloseButton - Whether to show close button in mobile variant (default: false)
+ * 
+ * Usage:
+ * <Header variant="mobile" homeUrl="/" searchDisabled={false} searchButtonDisabled={false} showCloseButton={false} />
+ * <Header variant="mobile-search" homeUrl="/" searchDisabled={false} />
+ * <Header variant="desktop" homeUrl="/" searchDisabled={false} />
+ * <Header variant="desktop-home" homeUrl="/" searchDisabled={false} />
+ * 
+ * Design System Notes:
+ * - Background: --surface-light-mid (neutral white strong)
+ * - Border: --on-surface-light-border-low bottom border
+ * - Brand text: --on-surface-light-regular
+ * - Spacing: 16px padding, 8px/12px gaps
+ * - Typography: Public Sans for brand, Inter for search input
+ */
+
+import ButtonSearch from './ButtonSearch.astro';
+import ButtonMenu from './ButtonMenu.astro';
+import ButtonClose from './ButtonClose.astro';
+import ButtonBack from './ButtonBack.astro';
+import InputSearchBar from './InputSearchBar.astro';
+import IconRocketColorGradient from '../icons/brand/IconRocketColorGradient.astro';
+
+export interface Props {
+  variant?: 'mobile' | 'mobile-search' | 'desktop' | 'desktop-home';
+  homeUrl?: string;
+  searchDisabled?: boolean;
+  searchButtonDisabled?: boolean;
+  showCloseButton?: boolean;
+}
+
+const { 
+  variant = 'mobile',
+  homeUrl = '/',
+  searchDisabled = false,
+  searchButtonDisabled = false,
+  showCloseButton = false
+} = Astro.props;
+---
+
+<header class="header" data-variant={variant}>
+  <!-- Border Overlay -->
+  <div class="border-overlay" aria-hidden="true"></div>
+  
+  {variant === 'mobile' && (
+    <!-- Mobile Variant: Brand + Action Buttons -->
+    <div class="header-content mobile-content">
+      <!-- Brand -->
+      <a href={homeUrl} class="brand brand-link">
+        <div class="brand-icon">
+          <IconRocketColorGradient />
+        </div>
+        <div class="brand-text">
+          <span class="brand-text-bold">FF</span>
+          <span class="brand-text-regular">Apps Archive</span>
+        </div>
+      </a>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <ButtonSearch disabled={searchButtonDisabled} />
+        <ButtonMenu />
+        {showCloseButton && <ButtonClose />}
+      </div>
+    </div>
+  )}
+  
+  {variant === 'mobile-search' && (
+    <!-- Mobile Search Variant: Back Button + Search Bar -->
+    <div class="header-content mobile-search-content">
+      <ButtonBack />
+      <div class="search-bar-wrapper">
+        <InputSearchBar disabled={searchDisabled} />
+      </div>
+    </div>
+  )}
+  
+  {variant === 'desktop' && (
+    <!-- Desktop Variant: Centered with Brand + Search Bar -->
+    <div class="header-content-wrapper desktop-wrapper">
+      <div class="header-content desktop-content">
+        <!-- Brand -->
+        <a href={homeUrl} class="brand desktop-brand brand-link">
+          <div class="brand-icon">
+            <IconRocketColorGradient />
+          </div>
+          <div class="brand-text desktop-brand-text">
+            <span class="brand-text-bold desktop-text-bold">FF</span>
+            <span class="brand-text-regular desktop-text-regular">Apps Archive</span>
+          </div>
+        </a>
+        
+        <!-- Search Bar -->
+        <div class="search-bar-container">
+          <InputSearchBar disabled={searchDisabled} />
+        </div>
+      </div>
+    </div>
+  )}
+  
+  {variant === 'desktop-home' && (
+    <!-- Desktop Home Variant: Brand + Full Search Bar -->
+    <div class="header-content desktop-home-content">
+      <!-- Brand -->
+      <a href={homeUrl} class="brand desktop-brand brand-link">
+        <div class="brand-icon">
+          <IconRocketColorGradient />
+        </div>
+        <div class="brand-text desktop-brand-text">
+          <span class="brand-text-bold desktop-text-bold">FF</span>
+          <span class="brand-text-regular desktop-text-regular">Apps Archive</span>
+        </div>
+      </a>
+      
+      <!-- Search Bar -->
+      <div class="search-bar-container">
+        <InputSearchBar disabled={searchDisabled} />
+      </div>
+    </div>
+  )}
+</header>
+
+<style>
+  /* ========================================
+     HEADER BASE
+     ======================================== */
+  .header {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background: var(--surface-light-mid);
+    padding: var(--spacing-16);
+  }
+
+  /* Border overlay (bottom border) */
+  .border-overlay {
+    position: absolute;
+    inset: 0;
+    border-bottom: var(--border-sm) solid var(--on-surface-light-border-low);
+    pointer-events: none;
+  }
+
+  /* ========================================
+     MOBILE VARIANT
+     ======================================== */
+  .mobile-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 968px;
+    margin: 0 auto;
+  }
+
+  /* Brand Section */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+  }
+
+  /* Brand Link Styles */
+  .brand-link {
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+  }
+
+  /* Hover state - overridden by focus */
+  .brand-link:hover:not(:focus-visible) {
+    opacity: 0.8;
+  }
+
+  /* Focus state - takes precedence over hover */
+  .brand-link:focus-visible {
+    outline: var(--border-lg) solid var(--on-surface-light-faded);
+    outline-offset: 2px;
+    opacity: 0.8;
+  }
+
+  /* Active state - click feedback */
+  .brand-link:active {
+    transform: scale(0.98);
+  }
+
+  .brand-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  .brand-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .brand-text {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-4);
+    color: var(--on-surface-light-regular);
+    white-space: nowrap;
+    line-height: 0;
+  }
+
+  .brand-text-bold {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .brand-text-regular {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  /* Action Buttons */
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    height: 32px;
+  }
+
+  /* ========================================
+     MOBILE SEARCH VARIANT
+     ======================================== */
+  .mobile-search-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-12);
+    width: 100%;
+  }
+
+  .search-bar-wrapper {
+    flex: 1 0 0;
+    min-width: 0;
+  }
+
+  /* ========================================
+     DESKTOP VARIANT
+     ======================================== */
+  .desktop-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .desktop-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1260px;
+    min-width: 260px;
+  }
+
+  .desktop-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+  }
+
+  .desktop-brand-text {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-4);
+    color: var(--on-surface-light-regular);
+    white-space: nowrap;
+    line-height: 0;
+  }
+
+  .desktop-text-bold {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .desktop-text-regular {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 20px;
+    letter-spacing: 0;
+  }
+
+  .search-bar-container {
+    width: 287px;
+    height: 32px;
+  }
+
+  /* ========================================
+     DESKTOP HOME VARIANT
+     ======================================== */
+  .desktop-home-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 968px;
+    margin: 0 auto;
+  }
+</style>
